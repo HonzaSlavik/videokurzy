@@ -1,6 +1,7 @@
 import type { FC } from "hono/jsx";
 import { Layout } from "./layout";
 import { LessonSearchForm } from "./lesson-search";
+import { SITE } from "../config/site";
 
 type DiscountStageView =
   | { kind: "off" }
@@ -70,21 +71,21 @@ function fmtTotalDuration(seconds: number): string {
   return m > 0 ? `${h} h ${m} min` : `${h} h`;
 }
 
+// Reference: nahraďte skutečnými citacemi se souhlasem účastníků.
 const TESTIMONIALS = [
-  { body: "Konečně česky, strukturovaně a od někoho, komu věřím. Za měsíc jsem postavil interní tool, na který jsme měsíce čekali na IT.", name: "Marek K.", role: "Projektový manažer", initials: "MK" },
-  { body: "Patrick nenatáčí Silicon Valley hype. Je to pragmatický průvodce pro lidi, kteří chtějí mít hotovo.", name: "Tomáš V.", role: "Junior developer", initials: "TV" },
-  { body: "Modul o designu mi zachránil projekt. Do té doby jsem měl výstup „funguje, ale vypadá to jako test\".", name: "Lenka D.", role: "Produktová manažerka", initials: "LD" },
+  { body: "[citace účastníka 1]", name: "[jméno 1]", role: "[role 1]", initials: "[AB]" },
+  { body: "[citace účastníka 2]", name: "[jméno 2]", role: "[role 2]", initials: "[CD]" },
+  { body: "[citace účastníka 3]", name: "[jméno 3]", role: "[role 3]", initials: "[EF]" },
 ];
 
 // Ceny se do FAQ vkládají z ceníku (site_config), ne napevno — jinak se text
 // rozejde s cenou po každé změně ceníku.
 const faqItems = (priceOrganization: number) => [
-  { q: "Potřebuju umět programovat?", a: "Ne. Kurz je stavěný pro netechnické lidi — projektové manažery, analytiky, produkťáky. Pracujeme s přirozeným jazykem, ne se syntaxí." },
-  { q: "Co když mi to nesedne?", a: "První modul (3 epizody) je zdarma — vyzkoušíte si to bez rizika. Pak máte 14 dní na refund, pokud jste prošli méně než polovinou." },
-  { q: "Jak dlouho mám přístup?", a: "Jeden rok od nákupu. Obnovuje se automaticky, ale kdykoliv můžete zrušit ve Stripe Customer Portalu." },
-  { q: "Firemní licence — jak to funguje?", a: `Zaplatíte ${fmtPrice(priceOrganization)}/rok a uvedete doménu (např. firma.cz). Všichni zaměstnanci s emailem na té doméně se mohou přihlásit magic linkem a mají přístup k celému obsahu.` },
-  { q: "Dostanu fakturu?", a: "Ano, automaticky přes Stripe. Pro firmy dodáváme standardní daňový doklad v CZK." },
-  { q: "Budou další kurzy?", a: "Ano. Předplatné je na celou platformu — jakmile vydáme další kurz, máte k němu přístup automaticky." },
+  { q: "[otázka 1]", a: "[odpověď 1]" },
+  { q: "[otázka 2]", a: "[odpověď 2]" },
+  { q: "[otázka 3]", a: "[odpověď 3]" },
+  { q: "[otázka k firemní licenci]", a: `[odpověď k firemní licenci] ${fmtPrice(priceOrganization)}/rok` },
+  { q: "[otázka 5]", a: "[odpověď 5]" },
 ];
 
 const CheckIcon = () => (
@@ -170,11 +171,10 @@ export const LandingPage: FC<LandingProps> = ({
       {/* Hero */}
       <section class="hero">
         <div>
-          <div class="eyebrow">// videokurz · sezóna 01</div>
-          <h1>Claude Code s&nbsp;Patrickem — vibe&nbsp;coding pro&nbsp;netechnické&nbsp;lidi.</h1>
+          <div class="eyebrow">[nadtitulek]</div>
+          <h1>[hlavní nadpis]</h1>
           <p class="lede">
-            Deset epizod, jedna aplikace, žádný bullshit. Od prázdného editoru k&nbsp;nasazené
-            aplikaci — bez&nbsp;programování, s&nbsp;Claudem jako parťákem.
+            [úvodní odstavec: komu je kurz určený a co si z něj odnese]
           </p>
           <div class="hero-actions">
             <a class="btn btn-lg" href="#cenik">
@@ -192,42 +192,11 @@ export const LandingPage: FC<LandingProps> = ({
             <span class="dot"></span>
             <span>{totalSeconds > 0 ? `${fmtTotalDuration(totalSeconds)} videa` : "4 h 45 min videa"}</span>
             <span class="dot"></span>
-            <span>česky, od&nbsp;Patricka&nbsp;Zandla</span>
+            <span>[jazyk a lektor]</span>
           </div>
         </div>
-        <div
-          class="terminal"
-          aria-hidden="true"
-          style="font-size:0.88rem"
-        >
-          <div class="terminal-header">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot amber"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-title">~/projects/muj-prvni-tool</span>
-          </div>
-          <div class="terminal-body">
-            <span class="cmt"># Epizoda 02 — „wow moment"</span>{"\n"}
-            <span class="pmt">$</span>
-            {" claude "}
-            <span class="kw">--prompt</span>
-            {" "}
-            <span class="str">"postav mi formulář na sběr zpětné vazby"</span>
-            {"\n\n  "}
-            <span class="ok">✓</span>
-            {" analyzuji záměr...\n  "}
-            <span class="ok">✓</span>
-            {" navrhuji strukturu komponent\n  "}
-            <span class="ok">✓</span>
-            {" generuji React + Tailwind\n  "}
-            <span class="ok">✓</span>
-            {" přidávám validaci a odesílání\n\n"}
-            <span class="cmt"># „Řekneš, co chceš. Claude udělá, jak."</span>
-            {"\n"}
-            <span class="pmt">$</span>
-            {" "}
-            <span class="cursor"></span>
-          </div>
+        <div class="card" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;min-height:260px;color:var(--muted)">
+          [obrázek nebo ukázka z kurzu]
         </div>
       </section>
 
@@ -287,7 +256,7 @@ export const LandingPage: FC<LandingProps> = ({
         <div class="section-header">
           <div>
             <div class="kicker">obsah kurzu</div>
-            <h2>Claude Code s Patrickem</h2>
+            <h2>[název kurzu]</h2>
           </div>
           <div class="section-subtitle">
             {freeCount > 0 && (
@@ -370,7 +339,7 @@ export const LandingPage: FC<LandingProps> = ({
         <div class="section-header">
           <div>
             <div class="kicker">ceník</div>
-            <h2>Dvě cesty — osobní a&nbsp;firemní.</h2>
+            <h2>[nadpis ceníku]</h2>
           </div>
         </div>
         {!user && (
@@ -497,7 +466,7 @@ export const LandingPage: FC<LandingProps> = ({
         <div class="section-header">
           <div>
             <div class="kicker">reference</div>
-            <h2>Co říkají ti, kdo už&nbsp;začali.</h2>
+            <h2>[nadpis referencí]</h2>
           </div>
         </div>
         <div class="quotes">
@@ -521,50 +490,29 @@ export const LandingPage: FC<LandingProps> = ({
         <div class="section-header">
           <div>
             <div class="kicker">lektor</div>
-            <h2>Kdo za kurzem stojí.</h2>
+            <h2>[nadpis sekce o lektorovi]</h2>
           </div>
         </div>
         <div class="bio">
           <div class="bio-photo">
-            <img
-              src="https://www.vibecoding.cz/images/patrick-zandl.jpeg"
-              alt="Patrick Zandl"
-              loading="lazy"
-            />
-            <span>patrick@vibecoding.cz</span>
+            <div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--surface, #f3f4f6);color:var(--muted)">
+              [fotka lektora]
+            </div>
+            <span>[kontaktní e-mail]</span>
           </div>
           <div>
-            <h3>Patrick Zandl</h3>
-            <div class="bio-sub">// autor &amp; lektor</div>
+            <h3>{SITE.author}</h3>
+            <div class="bio-sub">[role lektora]</div>
             <div class="bio-tags">
-              <span class="pill pill-ghost">novinář</span>
-              <span class="pill pill-ghost">produktový manažer</span>
-              <span class="pill pill-ghost">vibecoding.cz</span>
+              <span class="pill pill-ghost">[štítek 1]</span>
+              <span class="pill pill-ghost">[štítek 2]</span>
+              <span class="pill pill-ghost">[štítek 3]</span>
             </div>
-            <p>
-              Patrick je novinář, produktový manažer a autor blogu{" "}
-              <a href="https://vibecoding.cz" target="_blank" rel="noreferrer">
-                vibecoding.cz
-              </a>
-              , kde přes rok mapuje českou realitu práce s&nbsp;AI. Spoluzakladatel Mobil.cz,
-              Stream.cz a někdejší koordinátor vývoje v Prusa Research. Učí lidi, jak s&nbsp;pomocí
-              Claudu postavit skutečné věci — bez Silicon Valley hype a bez předpokladu, že umíte
-              programovat.
-            </p>
-            <p>
-              V&nbsp;kurzu provází stejným stylem, jakým píše: pragmaticky, česky
-              a&nbsp;s&nbsp;příběhy z&nbsp;praxe.
-            </p>
+            <p>[medailonek: zkušenosti a čím je lektor užitečný účastníkům]</p>
+            <p>[styl výuky]</p>
             <div class="bio-links">
-              <a href="https://vibecoding.cz" target="_blank" rel="noreferrer">
-                ↗ vibecoding.cz
-              </a>
-              <a href="https://marigold.cz" target="_blank" rel="noreferrer">
-                ↗ marigold.cz
-              </a>
-              <a href="https://cs.wikipedia.org/wiki/Patrick_Zandl" target="_blank" rel="noreferrer">
-                ↗ Wikipedia
-              </a>
+              <a href="#">[odkaz 1]</a>
+              <a href="#">[odkaz 2]</a>
             </div>
           </div>
         </div>
@@ -575,7 +523,7 @@ export const LandingPage: FC<LandingProps> = ({
         <div class="section-header">
           <div>
             <div class="kicker">faq</div>
-            <h2>Co se často ptáte.</h2>
+            <h2>[nadpis FAQ]</h2>
           </div>
         </div>
         <div class="faq">
@@ -595,11 +543,10 @@ export const LandingPage: FC<LandingProps> = ({
           <h2
             style="font-family:var(--font-head);font-size:clamp(1.5rem,2vw,1.9rem);font-weight:600;letter-spacing:-0.01em;margin:8px 0 12px"
           >
-            Tipy k&nbsp;vibe codingu zdarma.
+            [nadpis newsletteru]
           </h2>
           <p style="color:var(--muted);margin:0 0 24px;font-size:1rem">
-            Jednou týdně — praktické tipy, jak stavět aplikace s&nbsp;AI.
-            Žádný spam, odhlášení jedním klikem.
+            [co a jak často newsletter posílá]
           </p>
           <div id="newsletter-form">
             <form

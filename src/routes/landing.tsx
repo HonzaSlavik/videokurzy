@@ -70,10 +70,10 @@ landing.get("/", async (c) => {
   const priceIndividual = parseInt(cfg.price_individual ?? String(PRICE_INDIVIDUAL), 10);
   const priceOrganization = parseInt(cfg.price_organization ?? String(PRICE_ORGANIZATION), 10);
   const benefitsIndividual = JSON.parse(
-    cfg.benefits_individual ?? '["Přístup ke všem epizodám","Všechny budoucí kurzy v předplatném","Komentáře a dotazy k lekcím","14 dní na vrácení, bez dotazů"]'
+    cfg.benefits_individual ?? '["[výhoda 1]","[výhoda 2]","[výhoda 3]","[výhoda 4]"]'
   ) as string[];
   const benefitsOrganization = JSON.parse(
-    cfg.benefits_organization ?? '["Neomezený počet zaměstnanců","Přístup podle emailové domény","Faktura v CZK, standardní daňový doklad","Přehled využití pro L&D oddělení"]'
+    cfg.benefits_organization ?? '["[výhoda firemní licence 1]","[výhoda firemní licence 2]","[výhoda firemní licence 3]"]'
   ) as string[];
 
   const codeExpiresRaw = cfg.discount_code_expires_at ?? "";

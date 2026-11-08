@@ -11,7 +11,7 @@ export const SITE = {
   /** Monogram v logu hlavičky (2–3 znaky). */
   monogram: "jdp",
   /** Podtitul pod názvem v hlavičce. */
-  tagline: "videokurzy projektového řízení",
+  tagline: "projekty, produkty a inovace v praxi",
   /** Host, na kterém platforma běží (bez protokolu). */
   host: "kurzy.jakdelatprojekty.cz",
   /** Kanonická adresa webu bez koncového lomítka. */
@@ -22,7 +22,7 @@ export const SITE = {
    */
   rootDomain: "jakdelatprojekty.cz",
   /** Výchozí popis webu (meta description, OG). */
-  description: "Videokurzy o tom, jak vést projekty v praxi.",
+  description: "Videokurzy o tom, jak vést projekty, rozvíjet produkty a dotahovat inovace do praxe.",
   /** Hlavní lektor / autor kurzů (texty v e-mailech a OG popisech). */
   author: "Honza Slavík",
   /**

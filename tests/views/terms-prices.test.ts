@@ -41,7 +41,7 @@ describe("ceny v obchodních podmínkách", () => {
     await setPrices(3000, 25000);
     const html = await (await SELF.fetch("https://test.local/")).text();
     const faq = html.slice(html.indexOf('id="faq"'));
-    expect(faq).toMatch(/Zaplatíte 25\s000\sKč\/rok/);
+    expect(faq).toMatch(/25\s000\sKč\/rok/);
     expect(faq).not.toMatch(/15\s000\sKč/);
   });
 
