@@ -8,7 +8,7 @@
 // na výslovný pokyn provozovatele — souhlas se pixelům hlásí vždy jako granted.
 
 import type { Env } from "../types";
-import { sha256Hex } from "./cc-news/detect";
+import { sha256Hex } from "./hash";
 
 interface AnalyticsConfig {
   metaPixelId?: string;

@@ -33,18 +33,6 @@ export interface Env {
   CREDITAS_API_TOKEN?: string;
   CREDITAS_IDENTIFIKATOR?: string;
   COOKIE_DOMAIN?: string;
-  VIBECODING_PARTNER_KEY?: string;
-  // Služba „Novinky v Claude Code" — redakční LLM vrstva přes OpenRouter.
-  OPENROUTER_API_KEY?: string;
-  CC_NEWS_LLM?: string;        // „1" zapne LLM redakční vrstvu
-  CC_NEWS_LLM_MODEL?: string;  // override modelu (default anthropic/claude-sonnet-4.6)
-  CC_NEWS_DRY_RUN?: string;    // „0" by povolil live odeslání (ve fázi 1 zakázáno)
-  // Anglický přehled na vibecoding.cz/en: fine-grained token jen pro repo webu
-  // (Contents + Pull requests: write). Bez něj se PR neotevře, jen zaloguje.
-  VIBECODING_SITE_GITHUB_TOKEN?: string;
-  VIBECODING_SITE_REPO?: string; // owner/repo, výchozí tangero/vibecoding-site
-  // Exa contents API: changelog Grok Bot (x.ai/changelog/bot je za ochranou proti botům).
-  EXA_API_KEY?: string;
   // ─── Konverzní měření (reklamní platformy) — viz KONVERZE-PLAN.md ──
   // Meta Conversions API. PIXEL_ID je veřejné, CAPI_TOKEN je server-only secret.
   // Když chybí, Meta se nereportuje. TEST_EVENT_CODE jen pro testování (v produkci NESMÍ zůstat).

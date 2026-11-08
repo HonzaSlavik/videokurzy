@@ -20,8 +20,6 @@ import { devRoutes } from "./routes/dev";
 import { adminRoutes } from "./routes/admin";
 import { leadRoutes } from "./routes/leads";
 import internalRoutes from "./routes/internal";
-import { ccNewsRoutes } from "./routes/cc-news";
-import partnerRoutes from "./routes/partner-api";
 import profileRoutes from "./routes/profile";
 import { handleQueue, handleDlq } from "./queue";
 import { handleInvoiceQueue, handleInvoiceDlq } from "./invoice-queue";
@@ -91,9 +89,7 @@ app.route("/", checkoutRoutes);
 app.route("/", devRoutes);
 app.route("/", leadRoutes);
 app.route("/", adminRoutes);
-app.route("/", ccNewsRoutes); // PŘED internalRoutes — lidský HMAC link, ne service secret
 app.route("/", internalRoutes);
-app.route("/", partnerRoutes);
 app.route("/", profileRoutes);
 
 // Static pages

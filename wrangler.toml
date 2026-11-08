@@ -5,21 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 
 # Non-secret runtime vars. POZOR: plain-text vars nastavené jen v CF dashboardu
 # `wrangler deploy` PŘEPÍŠE podle tohoto souboru (smaže je). Proto patří sem,
-# ne do dashboardu. Secrets (OPENROUTER_API_KEY, RESEND_API_KEY, …) deploy nemaže
+# ne do dashboardu. Secrets (RESEND_API_KEY, …) deploy nemaže
 # — ty zůstávají v dashboardu.
 [vars]
-# Zapíná LLM redakční vrstvu „Novinky v Claude Code": digest se přepíše do plné
-# češtiny přes OpenRouter (vyžaduje secret OPENROUTER_API_KEY). Bez "1" se vrací
-# jen anglická deterministická kostra (viz lib/cc-news/editor.ts).
-CC_NEWS_LLM = "1"
-# Provozní brána reálného odesílání e-mailů „Novinky v Claude Code" (schvalovací
-# e-mail i newsletter). "0" = povol live odeslání; cokoli jiného / chybějící =
-# dry-run (jen log, NEodesílá). MUSÍ být tady v tomlu, ne jen v dashboardu —
-# `wrangler deploy` dashboard vars mimo toml MAŽE (proto se hodnota po deployi
-# ztrácela a rozeslání padalo do dry-run). Live odeslání stejně vyžaduje i druhou
-# bránu cc_news_live_send (DB) + RESEND_API_KEY, takže samotná "0" nic nerozešle
-# bez admin přepínače. env.test toto NEdědí → testy zůstávají dry-run.
-CC_NEWS_DRY_RUN = "0"
 # Meta konverzní měření (Conversions API). Pixel/Dataset ID je veřejné, patří sem
 # (deploy by ho z dashboardu smazal). CAPI token je secret → `wrangler secret put
 # META_CAPI_TOKEN`. Dataset "Videokurzy" v Events Manageru, oddělený od vibecoding.
@@ -106,7 +94,6 @@ AUTH_INTERNAL_SECRET = "test-internal-secret"
 BETTER_AUTH_SECRET = "test-better-auth-secret-32-chars-minimum"
 BETTER_AUTH_URL = "http://localhost:8787"
 RESEND_API_KEY = "test-resend-key"
-VIBECODING_PARTNER_KEY = "test-partner-key"
 # NOTE: COOKIE_DOMAIN intentionally unset in test env → host-only cookies, matches dev behavior.
 
 # [env.production] section was removed: deploys now go to the default

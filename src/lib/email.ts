@@ -201,7 +201,6 @@ export function lessonExpiryReminderHtml(opts: {
       <ul style="font-size: 15px; line-height: 1.6; color: ${BRAND_MID}; margin: 0; padding-left: 20px;">
         <li>všechny kurzy a epizody na platformě, včetně tohoto záznamu</li>
         <li>nové epizody, které během roku přibudou</li>
-        <li>týdenní Novinky v Claude Code česky</li>
       </ul>
       <p style="font-size: 15px; line-height: 1.6; color: ${BRAND_DARK}; margin: 12px 0 0;">${price}&nbsp;Kč na rok.</p>
     </div>
@@ -299,77 +298,8 @@ function withdrawalNoticeBlock(): string {
     </div>`;
 }
 
-/**
- * Schvalovací e-mail pro článek „Novinky v Claude Code" (W-005). Míří adminovi;
- * klik na link = jednorázové schválení a publikace. Odesílá se jen po lidském
- * potvrzení (mantinel) a v dry-run režimu se NEodesílá vůbec.
- */
-export function ccNewsApprovalHtml(opts: {
-  weekLabel: string;
-  versionRange: string | null;
-  approveUrl: string;
-  editUrl: string | null;
-}): string {
-  const versions = opts.versionRange ? ` (${opts.versionRange})` : "";
-  return emailWrapper(`
-    <p style="font-size: 16px; line-height: 1.5;">Nový koncept článku <strong>Novinky v Claude Code — ${opts.weekLabel}</strong>${versions} čeká na schválení.</p>
-    <p style="font-size: 16px; line-height: 1.5;">Po kliknutí se článek publikuje v gated sekci „Novinky v CC" a připraví k rozeslání. Odkaz je jednorázový.</p>
-    ${primaryButton(opts.approveUrl, "Schválit a publikovat")}
-    ${opts.editUrl ? `<p style="font-size: 14px; color: #4b5563; line-height: 1.5;">Chcete nejdřív upravit? <a href="${opts.editUrl}">Otevřít koncept k editaci</a>.</p>` : ""}
-    <p style="font-size: 14px; color: #4b5563; line-height: 1.5;">
-      Odkaz je platný 7 dní a lze ho použít jen jednou. Pokud článek publikovat nechcete, e-mail ignorujte.
-    </p>`);
-}
-
 const escHtml = (x: string) =>
   x.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-
-/**
- * Oznámení o automatickém vydání (místo schvalovacího e-mailu): co vyšlo, kde to
- * upravit a co našly kontroly v kódu. Nálezy jsou text od modelu, proto escapované.
- */
-export function ccNewsPublishedHtml(opts: {
-  intro: string;
-  links: { label: string; url: string }[];
-  findings: string[];
-}): string {
-  const links = opts.links
-    .map((l) => `<li><a href="${escHtml(l.url)}">${escHtml(l.label)}</a></li>`)
-    .join("");
-  const findings = opts.findings.length
-    ? `<p style="font-size: 15px; line-height: 1.5;"><strong>Nálezy kontrol v kódu</strong> (článek přesto vyšel, opravte zpětně):</p>
-       <ul style="font-size: 14px; line-height: 1.5;">${opts.findings.map((f) => `<li>${escHtml(f)}</li>`).join("")}</ul>`
-    : `<p style="font-size: 14px; color: #4b5563;">Kontroly v kódu bez nálezů.</p>`;
-  return emailWrapper(`
-    <p style="font-size: 16px; line-height: 1.5;">${escHtml(opts.intro)}</p>
-    <ul style="font-size: 15px; line-height: 1.7;">${links}</ul>
-    ${findings}`);
-}
-
-/**
- * HTML rozesílaného newsletteru „Novinky v Claude Code". Skládá volitelný
- * úvodník (osobní komentář redaktora, jen do e-mailu — ne na web) NAD vlastní
- * článek a obojí vloží do brandového wrapperu. `introHtml` i `articleHtml` jsou
- * UŽ vyrenderované z markdownu (volající používá sdílený renderMarkdown), proto
- * je sem vkládáme přímo. `unsubscribeUrl` je per-příjemce odhlašovací odkaz.
- */
-export function ccNewsNewsletterHtml(opts: {
-  introHtml: string | null;
-  articleHtml: string;
-  unsubscribeUrl: string;
-}): string {
-  const intro = opts.introHtml
-    ? `<div style="margin: 0 0 24px; font-size: 16px; line-height: 1.6; color: ${TEXT};">${opts.introHtml}</div>
-       <hr style="border: none; border-top: 1px solid ${DIVIDER}; margin: 24px 0;">`
-    : "";
-  return emailWrapper(`
-    ${intro}
-    <div style="font-size: 15px; line-height: 1.6; color: ${TEXT};">${opts.articleHtml}</div>
-    <p style="font-size: 12px; color: ${TEXT_MUTED}; text-align: center; margin-top: 24px;">
-      Newsletter dostáváte jako platící uživatel kurzy.vibecoding.cz.
-      <a href="${opts.unsubscribeUrl}" style="color: ${TEXT_MUTED};">Odhlásit odběr</a>.
-    </p>`);
-}
 
 /** Potvrzení self-service výmazu účtu (GDPR). Odkaz platí 15 minut. */
 export function accountDeletionConfirmHtml(confirmUrl: string): string {

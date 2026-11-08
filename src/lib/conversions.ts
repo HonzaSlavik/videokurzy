@@ -15,7 +15,7 @@ import { and, eq, isNull, or, lt, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { nanoid } from "nanoid";
 import { purchase, lessonPurchase, conversionLog } from "../db/schema";
-import { sha256Hex } from "./cc-news/detect";
+import { sha256Hex } from "./hash";
 import type { Env } from "../types";
 
 type Db = ReturnType<typeof drizzle>;

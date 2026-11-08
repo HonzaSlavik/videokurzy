@@ -6,7 +6,7 @@
 // článku) ani při sdíleném secretu. Každý volající si drží svůj stabilní prefix.
 //
 // Tahle utilita sjednocuje dříve duplikované kopie z account-deletion.ts a
-// cc-news/approval.ts.
+// původně cc-news/approval.ts.
 
 export function base64UrlEncodeBytes(bytes: Uint8Array): string {
   let binary = "";
