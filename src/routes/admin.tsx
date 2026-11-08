@@ -212,7 +212,7 @@ const AdminUserForm: FC<{
             class="mt-1"
           />
           <span>
-            <span class="font-medium">Odeslat uvítací e-mail z {OPERATOR.email}</span>
+            <span class="font-medium">Odeslat uvítací e-mail z {MAIL.personalFrom}</span>
             <span class="block text-gray-500">
               Pod tvůj text se automaticky připojí technické informace o účtu, typu přístupu a platnosti.
             </span>

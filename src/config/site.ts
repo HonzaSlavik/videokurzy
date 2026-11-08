@@ -13,9 +13,9 @@ export const SITE = {
   /** Podtitul pod názvem v hlavičce. */
   tagline: "videokurzy projektového řízení",
   /** Host, na kterém platforma běží (bez protokolu). */
-  host: "jakdelatprojekty.cz",
+  host: "kurzy.jakdelatprojekty.cz",
   /** Kanonická adresa webu bez koncového lomítka. */
-  url: "https://jakdelatprojekty.cz",
+  url: "https://kurzy.jakdelatprojekty.cz",
   /**
    * Doména, pod kterou smí vést návratové odkazy po přihlášení
    * (apex i libovolná subdoména). Viz lib/callback-allowlist.ts.
@@ -52,16 +52,16 @@ export const OPERATOR = {
  * E-maily administrátorů: dostávají upozornění na objednávky a po přihlášení
  * mají přístup do /admin. Bez vyplnění nemá admin práva nikdo.
  */
-export const ADMIN_EMAIL_LIST: readonly string[] = ["DOPLNIT"];
+export const ADMIN_EMAIL_LIST: readonly string[] = ["honza@ovax.cz"];
 
 /** E-mailová komunikace. */
 export const MAIL = {
   /** Odesílatel transakčních e-mailů (doména musí být ověřená v Resend). */
   from: `${SITE.name} <kurzy@${SITE.rootDomain}>`,
   /** Adresa pro odpovědi a podporu. */
-  replyTo: OPERATOR.email,
+  replyTo: `kurzy@${SITE.rootDomain}`,
   /** Odesílatel osobních e-mailů od lektora (uvítání nového uživatele). */
-  personalFrom: `${SITE.author} <${OPERATOR.email}>`,
+  personalFrom: `${SITE.author} <kurzy@${SITE.rootDomain}>`,
   /** Kdo „podepisuje" transakční e-maily. */
   signature: SITE.author,
 } as const;
