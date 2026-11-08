@@ -1,5 +1,6 @@
 import type { FC } from "hono/jsx";
 import { Layout } from "./layout";
+import { OPERATOR } from "../config/site";
 
 interface ErrorPageProps {
   code: 404 | 500;
@@ -33,7 +34,7 @@ export const ErrorPage: FC<ErrorPageProps> = ({ code, user }) => {
             zpět na úvod
           </a>
           {" "}
-          <a class="btn btn-ghost btn-sm" href="mailto:patrick@vibecoding.cz">
+          <a class="btn btn-ghost btn-sm" href={`mailto:${OPERATOR.email}`}>
             napsat nám
           </a>
         </p>

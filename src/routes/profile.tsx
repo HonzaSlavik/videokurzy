@@ -25,6 +25,7 @@ import { sendEmail, accountDeletionConfirmHtml } from "../lib/email";
 import { Layout } from "../views/layout";
 import { ProfilePage } from "../views/profile";
 import type { Env, Variables } from "../types";
+import { OPERATOR, SITE } from "../config/site";
 
 /**
  * User-facing profile endpoints for managing the email addresses associated
@@ -203,7 +204,7 @@ profile.post("/api/profile/delete", async (c) => {
 
   const sent = await sendEmail(c.env, {
     to: user.email,
-    subject: "Potvrďte smazání účtu — kurzy.vibecoding.cz",
+    subject: `Potvrďte smazání účtu, ${SITE.host}`,
     html: accountDeletionConfirmHtml(confirmUrl.toString()),
   });
   if (!sent) {
@@ -256,7 +257,7 @@ profile.get("/profile/delete/confirm", async (c) => {
         <section class="max-w-md mx-auto px-4 py-16 text-center">
           <h1 class="text-2xl font-bold mb-4">Smazání se nezdařilo</h1>
           <p class="text-gray-600 mb-6">
-            Zkuste to prosím znovu, nebo nás kontaktujte na andrea@vibecoding.cz.
+            Zkuste to prosím znovu, nebo nás kontaktujte na {OPERATOR.email}.
           </p>
         </section>
       </Layout>,

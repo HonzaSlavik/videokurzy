@@ -1,11 +1,12 @@
 // Email helper — odesílání brandovaných emailů přes Resend API.
-// Odesílatel: Andrea Maloveczká <andrea@vibecoding.cz> (viz config/admin.ts)
+// Odesílatel a značka: viz config/site.ts
 
 import { EMAIL_FROM, EMAIL_REPLY_TO } from "../config/admin";
 import { escapeHtml } from "./markdown";
 import type { Env } from "../types";
 import { TermsContent, TERMS_EFFECTIVE_DATE } from "../views/terms";
 import type { Prices } from "./prices";
+import { MAIL, OPERATOR, OPERATOR_POSTAL, SITE } from "../config/site";
 
 // Brand barvy pro emailové šablony. Inline CSS je nutnost (klienti CSS ignorují),
 // ale konstanty drží konzistenci, ať změna brand barvy je jednomístná.
@@ -57,19 +58,19 @@ export async function sendEmail(
   }
 }
 
-/** Sdílený HTML wrapper s brandingem kurzy.vibecoding.cz. */
+/** Sdílený HTML wrapper s brandingem platformy. */
 function emailWrapper(content: string): string {
   return `<!DOCTYPE html>
 <html lang="cs">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 40px 20px; color: ${TEXT}; background: #ffffff;">
   <div style="text-align: center; margin-bottom: 32px;">
-    <h1 style="font-size: 20px; font-weight: 600; margin: 0;">kurzy.vibecoding.cz</h1>
+    <h1 style="font-size: 20px; font-weight: 600; margin: 0;">${SITE.name}</h1>
   </div>
   ${content}
   <hr style="border: none; border-top: 1px solid ${DIVIDER}; margin: 32px 0;">
   <p style="font-size: 12px; color: ${TEXT_MUTED}; text-align: center;">
-    kurzy.vibecoding.cz &middot; Andrea Maloveczká &middot; Vibecoding.cz
+    ${SITE.host} &middot; ${OPERATOR.name}
   </p>
 </body>
 </html>`;
@@ -148,7 +149,7 @@ export async function purchaseConfirmedHtml(
     <p style="font-size: 16px; line-height: 1.5;">Přístup ke všem kurzům máte na 12 měsíců.</p>
     ${primaryButton(loginUrl, "Přihlásit se do kurzu")}
     <p style="font-size: 14px; color: #4b5563; line-height: 1.5;">
-      Dotazy? Odpovězte na tento email — píše vám Andrea Maloveczká.
+      Dotazy? Odpovězte na tento email — píše vám ${MAIL.signature}.
     </p>
     ${isConsumer ? withdrawalNoticeBlock() : ""}
     ${terms}`);
@@ -177,7 +178,7 @@ export async function lessonPurchaseConfirmedHtml(opts: {
       Přihlaste se e-mailem, na který přišla tahle zpráva. Variabilní symbol objednávky: ${escHtml(opts.variableSymbol)}.
     </p>
     <p style="font-size: 14px; color: ${TEXT_MUTED}; line-height: 1.5;">
-      Dotazy? Odpovězte na tento email — píše vám Andrea Maloveczká.
+      Dotazy? Odpovězte na tento email — píše vám ${MAIL.signature}.
     </p>
     ${opts.isConsumer ? withdrawalNoticeBlock() : ""}
     ${terms}`);
@@ -278,16 +279,15 @@ function withdrawalNoticeBlock(): string {
     </p>
     <p style="font-size: 13px; color: #4b5563; line-height: 1.6; margin: 0 0 8px;">
       Odstoupení stačí odeslat před uplynutím lhůty e-mailem na
-      <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a> nebo poštou
-      na adresu Patrick Zandl, U Přelízky 1126/6, 250 01 Brandýs nad Labem-Stará
-      Boleslav. Postačí jakékoli jednoznačné prohlášení; formulář níže je jen
+      <a href="mailto:${OPERATOR.email}">${OPERATOR.email}</a> nebo poštou
+      na adresu ${OPERATOR_POSTAL}. Postačí jakékoli jednoznačné prohlášení; formulář níže je jen
       pomůcka a jeho použití není povinné. Peníze vrátíme do 14 dnů od doručení
       odstoupení stejným způsobem, jakým jsme je přijali.
     </p>
     <div style="font-size: 13px; color: #4b5563; line-height: 1.7; background: #f9fafb; border-left: 3px solid ${DIVIDER}; padding: 12px 16px; margin: 12px 0;">
       <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br><br>
-      Adresát: Patrick Zandl, U Přelízky 1126/6, 250 01 Brandýs nad Labem-Stará Boleslav, patrick@vibecoding.cz<br><br>
-      Oznamuji, že tímto odstupuji od smlouvy o poskytnutí přístupu k videokurzům na kurzy.vibecoding.cz.<br><br>
+      Adresát: ${OPERATOR_POSTAL}, ${OPERATOR.email}<br><br>
+      Oznamuji, že tímto odstupuji od smlouvy o poskytnutí přístupu k videokurzům na ${SITE.host}.<br><br>
       Datum objednání: …<br>
       Jméno a příjmení spotřebitele: …<br>
       Adresa spotřebitele: …<br>
@@ -304,7 +304,7 @@ const escHtml = (x: string) =>
 /** Potvrzení self-service výmazu účtu (GDPR). Odkaz platí 15 minut. */
 export function accountDeletionConfirmHtml(confirmUrl: string): string {
   return emailWrapper(`
-    <p style="font-size: 16px; line-height: 1.5;">Požádali jste o <strong>trvalé smazání svého účtu</strong> na kurzy.vibecoding.cz.</p>
+    <p style="font-size: 16px; line-height: 1.5;">Požádali jste o <strong>trvalé smazání svého účtu</strong> na ${SITE.host}.</p>
     <p style="font-size: 16px; line-height: 1.5;">Po potvrzení se smaže váš profil, přihlašovací údaje a postup ve kurzech. Tuto akci nelze vrátit zpět.</p>
     ${primaryButton(confirmUrl, "Potvrdit smazání účtu")}
     <p style="font-size: 14px; color: #4b5563; line-height: 1.5;">
@@ -393,7 +393,7 @@ const ACCESS_LABEL: Record<"free" | "individual" | "organization", string> = {
   organization: "firemní licence — plný přístup ke všem kurzům",
 };
 
-/** Email od Patricka novému uživateli zřízenému adminem. */
+/** Osobní email lektora novému uživateli zřízenému adminem. */
 export function adminWelcomeUserHtml(opts: {
   personalMessage: string;
   email: string;
@@ -414,7 +414,7 @@ export function adminWelcomeUserHtml(opts: {
     <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;">
     <p style="font-size: 14px; color: #444; line-height: 1.5;"><strong>Informace o tvém účtu</strong></p>
     <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin: 12px 0; font-size: 14px; line-height: 1.6;">
-      <p style="margin: 0;"><strong>Platforma:</strong> kurzy.vibecoding.cz</p>
+      <p style="margin: 0;"><strong>Platforma:</strong> ${SITE.host}</p>
       <p style="margin: 4px 0 0;"><strong>Přihlašovací e-mail:</strong> ${opts.email}</p>
       <p style="margin: 4px 0 0;"><strong>Typ přístupu:</strong> ${ACCESS_LABEL[opts.access]}</p>
       <p style="margin: 4px 0 0;">${expiryLine}</p>
@@ -517,7 +517,7 @@ export function paymentReminder5dHtml(opts: PaymentReminderOpts): string {
       Chcete raději platit kartou s okamžitou aktivací? <a href="${opts.cardUrl}" style="color:#4f46e5;">Klikněte sem</a>.
     </p>
     <p style="font-size:14px;color:#6b7280;line-height:1.6;">
-      Dotazy? Odpovězte na tento email — píše vám Patrick Zandl.
+      Dotazy? Odpovězte na tento email — píše vám ${MAIL.signature}.
     </p>`);
 }
 

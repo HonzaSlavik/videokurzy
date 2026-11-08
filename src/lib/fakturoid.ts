@@ -8,9 +8,10 @@
  */
 
 import { maskEmail } from "./errors";
+import { OPERATOR, SITE } from "../config/site";
 
 const API_BASE = "https://app.fakturoid.cz/api/v3";
-const USER_AGENT = "VibeCoding kurzy (patrick@zandl.cz)";
+const USER_AGENT = `${SITE.name} (${OPERATOR.email})`;
 
 // In-memory cache pro access token a account slug — token má platnost 2h,
 // slug se nemění. Cache přežije v rámci jednoho worker isolatu.
@@ -418,7 +419,7 @@ async function sendInvoiceEmail(
     email,
     subject: "Faktura za roční přístup k videokurzu",
     message:
-      "Dobrý den,\n\nv příloze zasíláme fakturu za roční přístup ke kurzům na kurzy.vibecoding.cz.\n\nDěkujeme za nákup.\n\n#link#\n\nVibecoding.cz",
+      `Dobrý den,\n\nv příloze zasíláme fakturu za roční přístup ke kurzům na ${SITE.host}.\n\nDěkujeme za nákup.\n\n#link#\n\n${SITE.name}`,
   });
 }
 

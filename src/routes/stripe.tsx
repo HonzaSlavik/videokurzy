@@ -7,6 +7,7 @@ import { sklikConversionSnippetFor } from "../lib/analytics-snippet";
 import { lesson, lessonPurchase } from "../db/schema";
 import { LESSON_ACCESS_DAYS } from "../config/payment";
 import { formatAccessDate, lessonAccessExpiry } from "../lib/lesson-access";
+import { SITE } from "../config/site";
 
 const stripeRoutes = new Hono<{ Bindings: Env; Variables: Variables }>();
 
@@ -70,7 +71,7 @@ stripeRoutes.get("/checkout/success", async (c) => {
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Platba proběhla | kurzy.vibecoding.cz</title>
+        <title>{`Platba proběhla | ${SITE.host}`}</title>
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
       <body class="bg-gray-50 min-h-screen flex items-center justify-center">

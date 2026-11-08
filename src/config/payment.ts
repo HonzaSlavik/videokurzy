@@ -1,17 +1,18 @@
 // Konfigurace plateb — Stripe a FIO Bank
-// Zdroj FIO účtu: Patrick Zandl, FIO podnikatelský účet 2403461724/2010
+// Bankovní účet a provozovatel se nastavují v config/site.ts.
+import { BANK_ACCOUNT, OPERATOR } from "./site";
 
-/** IBAN FIO účtu (podnikatelský) */
-export const PAYMENT_IBAN = "CZ9720100000002403461724";
+/** IBAN FIO účtu */
+export const PAYMENT_IBAN = BANK_ACCOUNT.iban;
 
 /** Číslo účtu pro zobrazení */
-export const PAYMENT_ACCOUNT = "2403461724/2010";
+export const PAYMENT_ACCOUNT = BANK_ACCOUNT.account;
 
 /** BIC / SWIFT kód */
-export const PAYMENT_BIC = "FIOBCZPP";
+export const PAYMENT_BIC = BANK_ACCOUNT.bic;
 
 /** Název příjemce (zobrazí se na QR platbě a v SPAYD) */
-export const PAYMENT_RECIPIENT = "Patrick Zandl";
+export const PAYMENT_RECIPIENT = BANK_ACCOUNT.recipient;
 
 /** B2C částka v CZK */
 export const PRICE_INDIVIDUAL = 2000;
@@ -29,11 +30,11 @@ export const FIO_VS_PREFIX = "33";
 // Druhá banka pro příchozí převody. Páruje se stejným způsobem jako FIO
 // (VS + přesná částka), liší se jen API a prefixem VS.
 
-/** IBAN Creditas účtu (zobrazuje se na QR platbě a v SPAYD). Odvozeno z 101014591/2250. */
-export const CREDITAS_PAYMENT_IBAN = "CZ4322500000000101014591";
+/** IBAN Creditas účtu (zobrazuje se na QR platbě a v SPAYD). Vyplnit jen při použití Creditas. */
+export const CREDITAS_PAYMENT_IBAN = "DOPLNIT";
 
 /** Číslo Creditas účtu pro zobrazení. */
-export const CREDITAS_PAYMENT_ACCOUNT = "101014591/2250";
+export const CREDITAS_PAYMENT_ACCOUNT = "DOPLNIT";
 
 /** BIC / SWIFT kód Creditas */
 export const CREDITAS_PAYMENT_BIC = "CTASCZ22";
@@ -124,13 +125,13 @@ export const PROFORMA_PREFIX = "ZD";
 
 /** Dodavatel — pro zálohový doklad. (Fakturoid si svého dodavatele drží sám.) */
 export const SUPPLIER = {
-  name: "Patrick Zandl",
-  ico: "43943420",
-  email: "patrick@zandl.cz",
-  address: "U Přelízky 1126/6",
-  city: "Brandýs nad Labem-Stará Boleslav",
-  zip: "250 01",
-  country: "Česká republika",
+  name: OPERATOR.name,
+  ico: OPERATOR.ico,
+  email: OPERATOR.email,
+  address: OPERATOR.address,
+  city: OPERATOR.city,
+  zip: OPERATOR.zip,
+  country: OPERATOR.country,
   bankAccount: PAYMENT_ACCOUNT,
-  bankName: "Fio banka, a.s.",
+  bankName: BANK_ACCOUNT.bankName,
 } as const;

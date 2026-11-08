@@ -16,6 +16,7 @@ import {
 } from "../config/payment";
 import { generateSPD } from "./fio";
 import { generateQRSvg } from "./qr";
+import { SITE } from "../config/site";
 
 export interface ProformaData {
   proformaNumber: string;
@@ -159,7 +160,7 @@ export function generateProformaHtml(data: ProformaData): string {
   <div class="note">
     <p>Platbu proveďte převodem na výše uvedený účet s uvedením variabilního symbolu.
     Po přijetí platby vám bude na e-mail ${esc(data.contactEmail)} zaslán daňový doklad (faktura).</p>
-    <p>Platí <a href="https://kurzy.vibecoding.cz/obchodni-podminky">obchodní podmínky</a>.</p>
+    <p>Platí <a href="${SITE.url}/obchodni-podminky">obchodní podmínky</a>.</p>
   </div>
 </body>
 </html>`;

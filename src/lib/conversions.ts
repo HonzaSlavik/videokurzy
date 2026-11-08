@@ -17,6 +17,7 @@ import { nanoid } from "nanoid";
 import { purchase, lessonPurchase, conversionLog } from "../db/schema";
 import { sha256Hex } from "./hash";
 import type { Env } from "../types";
+import { SITE } from "../config/site";
 
 type Db = ReturnType<typeof drizzle>;
 type Provider = "meta" | "google" | "sklik";
@@ -357,7 +358,7 @@ async function sendMeta(env: Env, ctx: ReportContext): Promise<{ status: number;
 
   // event_source_url: server-side report nemá request URL, vezmeme base URL webu
   // (BETTER_AUTH_URL) s fallbackem na produkční doménu kurzů. Meta ho doporučuje.
-  const sourceUrl = (env.BETTER_AUTH_URL || "https://kurzy.vibecoding.cz").replace(/\/$/, "");
+  const sourceUrl = (env.BETTER_AUTH_URL || SITE.url).replace(/\/$/, "");
 
   const payload: Record<string, unknown> = {
     data: [

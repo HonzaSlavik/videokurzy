@@ -24,6 +24,7 @@ import {
   lessonInvoiceLineName,
   type FakturoidApi,
 } from "./fakturoid-gateway";
+import { SITE } from "../../config/site";
 
 type Db = ReturnType<typeof drizzle>;
 
@@ -268,7 +269,7 @@ export async function processInvoiceJob(
           `<p>Fakturační job <strong>${jobId}</strong> (purchase ${job.purchaseId}, ${escapeHtml(job.customId)}) ` +
           `skončil ve stavu <strong>failed_permanent</strong> po ${job.attempts} pokusech.</p>` +
           `<p>Chyba: ${escapeHtml(e.code)}${e.status ? ` (${e.status})` : ""} — ${escapeHtml(e.message)}</p>` +
-          `<p>Vyřeš ručně v <a href="https://kurzy.vibecoding.cz/admin/fakturace?state=failed_permanent">/admin/fakturace</a>.</p>`,
+          `<p>Vyřeš ručně v <a href="${SITE.url}/admin/fakturace?state=failed_permanent">/admin/fakturace</a>.</p>`,
       });
     }
     return permanent ? { status: "failed_permanent", code: e.code } : { status: "failed_retryable", code: e.code };

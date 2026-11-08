@@ -1,8 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { env, SELF, createExecutionContext } from "cloudflare:test";
 import { createAuth } from "../../src/lib/auth";
+import { SITE } from "../../src/config/site";
 
-// Přihlášení do diskuse pod články na www.vibecoding.cz: interní magic-link
+// Přihlášení do diskuse pod články na hlavním webu (SITE.trustedOrigins): interní magic-link
 // s purpose "comments" pošle e-mail s textem pro diskusi a odkaz po ověření
 // vrátí čtenáře na článek (callbackURL mimo BETTER_AUTH_URL → trustedOrigins).
 let captured: { subject?: string; html?: string; url?: string } = {};
@@ -37,13 +38,13 @@ async function requestCommentsLink(callbackUrl: string, purpose?: string) {
   return res;
 }
 
-describe("magic link pro diskuse na www.vibecoding.cz", () => {
-  const article = "https://www.vibecoding.cz/articles/ostatni/clanek/#komentare";
+describe("magic link pro diskuse na hlavním webu", () => {
+  const article = `https://www.${SITE.rootDomain}/articles/clanek/#komentare`;
 
   it("e-mail s purpose comments má text pro diskusi", async () => {
     const res = await requestCommentsLink(article, "comments");
     expect(res.status).toBe(200);
-    expect(captured.subject).toBe("Přihlášení do diskuse na Vibecoding.cz");
+    expect(captured.subject).toBe(`Přihlášení do diskuse na ${SITE.name}`);
     expect(captured.html).toContain("Přihlásit se do diskuse");
   });
 
@@ -65,13 +66,13 @@ describe("magic link pro diskuse na www.vibecoding.cz", () => {
   // což Vitest hlásí jako unhandled rejection (viz docs/gotchas.md). Kontrolu
   // callbackURL proto ověřujeme na stejné funkci, kterou volá originCheck
   // middleware verify endpointu: context.isTrustedOrigin.
-  it("Better Auth považuje článek na www.vibecoding.cz za důvěryhodný callback", async () => {
+  it("Better Auth považuje článek na hlavním webu za důvěryhodný callback", async () => {
     const auth = createAuth(env as never, createExecutionContext());
     const ctx = await auth.$context;
     expect(ctx.isTrustedOrigin(article, { allowRelativePaths: true })).toBe(true);
-    expect(ctx.isTrustedOrigin("https://vibecoding.cz/x", { allowRelativePaths: true })).toBe(true);
+    expect(ctx.isTrustedOrigin(`https://${SITE.rootDomain}/x`, { allowRelativePaths: true })).toBe(true);
     expect(ctx.isTrustedOrigin("https://evil.example/x", { allowRelativePaths: true })).toBe(false);
-    expect(ctx.isTrustedOrigin("https://www.vibecoding.cz.evil.example/x", { allowRelativePaths: true })).toBe(false);
+    expect(ctx.isTrustedOrigin(`https://www.${SITE.rootDomain}.evil.example/x`, { allowRelativePaths: true })).toBe(false);
   });
 
   it("callback na cizí doménu interní endpoint dál odmítne", async () => {

@@ -63,7 +63,7 @@ describe("GET /watch/:slug chapters", () => {
     expect(html).toContain("chapter-sidebar");
     expect(html).toContain('class="lesson-body"');
     expect(html).toContain("<strong>popis lekce</strong>");
-    expect(html).toContain('<a href="https://vibecoding.cz"');
+    expect(html).toContain('<a href="https://vibecoding.cz/" target="_blank"');
     expect(html).toContain("next-lessons-panel");
     expect(html).toContain("Další epizody");
     expect(html).toContain("Navazujici epizoda");

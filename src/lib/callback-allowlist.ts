@@ -1,9 +1,11 @@
+import { SITE } from "../config/site";
+
 /**
  * Returns true if the URL is allowed as a post-login callback.
  *
  * Allowed:
- * - `https://vibecoding.cz/...` (apex)
- * - `https://*.vibecoding.cz/...` (any subdomain)
+ * - `https://<SITE.rootDomain>/...` (apex)
+ * - `https://*.<SITE.rootDomain>/...` (any subdomain)
  * - `http://localhost[:port]/...` (local development)
  *
  * Rejected:
@@ -21,5 +23,5 @@ export function isAllowedCallback(raw: string): boolean {
   }
   if (url.protocol === "http:" && url.hostname === "localhost") return true;
   if (url.protocol !== "https:") return false;
-  return url.hostname === "vibecoding.cz" || url.hostname.endsWith(".vibecoding.cz");
+  return url.hostname === SITE.rootDomain || url.hostname.endsWith(`.${SITE.rootDomain}`);
 }

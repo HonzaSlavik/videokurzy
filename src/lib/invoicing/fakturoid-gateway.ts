@@ -17,6 +17,7 @@
 
 import { apiRequest, type FakturoidEnv } from "../fakturoid";
 import type { JobKind } from "./jobs";
+import { SITE } from "../../config/site";
 
 /** Tenké HTTP rozhraní nad Fakturoid API — injektovatelné kvůli testům. */
 export interface FakturoidApi {
@@ -207,10 +208,10 @@ export async function ensureInvoiceSent(
 
   await api.post(`invoices/${invoiceId}/message.json`, {
     email,
-    subject: "Faktura za roční přístup ke kurzům — kurzy.vibecoding.cz",
+    subject: `Faktura za roční přístup ke kurzům — ${SITE.host}`,
     message:
       "Dobrý den,\n\nv příloze zasíláme fakturu za roční přístup ke kurzům.\n\n" +
-      "Děkujeme.\n\n#link#\n\nvibecoding.cz",
+      `Děkujeme.\n\n#link#\n\n${SITE.name}`,
   });
   return { status: "sent" };
 }

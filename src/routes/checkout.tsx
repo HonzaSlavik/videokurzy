@@ -58,6 +58,7 @@ import { generateQRSvg } from "../lib/qr";
 import { getPrices } from "../lib/prices";
 import { sendEmail, fioPendingHtml, purchaseConfirmedHtml, isConsumerPurchase, adminNewOrgHtml } from "../lib/email";
 import { Layout } from "../views/layout";
+import { SITE } from "../config/site";
 import {
   CheckoutSelect,
   LessonCheckout,
@@ -254,7 +255,7 @@ checkoutRoutes.get("/checkout/individual", async (c) => {
     inviteLabel: invite?.label,
     invitePercent: invite?.percent,
   });
-  return c.html(<Layout title="Roční přístup — kurzy.vibecoding.cz">{view}</Layout>);
+  return c.html(<Layout title="Roční přístup">{view}</Layout>);
 });
 
 checkoutRoutes.post("/checkout/individual", async (c) => {
@@ -448,7 +449,7 @@ checkoutRoutes.get("/checkout/organization", async (c) => {
     inviteLabel: invite?.label,
     invitePercent: invite?.percent,
   });
-  return c.html(<Layout title="Firemní licence — kurzy.vibecoding.cz">{view}</Layout>);
+  return c.html(<Layout title="Firemní licence">{view}</Layout>);
 });
 
 checkoutRoutes.post("/checkout/organization", async (c) => {
@@ -821,7 +822,7 @@ async function startFioCheckout(
   c.executionCtx.waitUntil(
     sendEmail(c.env, {
       to: email,
-      subject: "Potvrzení objednávky — kurzy.vibecoding.cz",
+      subject: `Potvrzení objednávky, ${SITE.host}`,
       html: fioPendingHtml(payUrl, price, formatDueDate(expiresAt), proformaUrl, proformaNumber),
     })
   );

@@ -5,6 +5,7 @@
 import { createHash } from "node:crypto";
 import type { Env } from "../types";
 import type { BunnyLibrary } from "./bunny-library";
+import { SITE } from "../config/site";
 
 const BUNNY_API_BASE = "https://video.bunnycdn.com";
 
@@ -148,7 +149,7 @@ export async function fetchCaptionVtt(
   const authUrl = env.BETTER_AUTH_URL?.replace(/\/$/, "") ?? "";
   const referer = authUrl && !authUrl.includes("localhost")
     ? `${authUrl}/`
-    : "https://kurzy.vibecoding.cz/";
+    : `${SITE.url}/`;
   const res = await fetch(url, { headers: { Referer: referer } });
   if (!res.ok) {
     return { kind: "fetch-failed", status: res.status, url };

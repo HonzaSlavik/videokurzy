@@ -3,9 +3,9 @@
 import type { Env } from "../types";
 import { fetchBunnyVideo, signPullZoneUrl } from "./transcribe";
 import type { BunnyLibrary } from "./bunny-library";
+import { SITE } from "../config/site";
 
-export const DEFAULT_OG_DESCRIPTION =
-  "Naučte se vibe coding s Claude Code. 10 epizod, od nápadu po deployment.";
+export const DEFAULT_OG_DESCRIPTION: string = SITE.description;
 
 /**
  * Z markdownu popisu lekce udělá krátký prostý text pro og:description.
@@ -41,7 +41,7 @@ export function lessonOgDescription(
 ): string {
   const excerpt = markdownExcerpt(bodyMarkdown);
   if (excerpt) return excerpt;
-  if (moduleTitle) return `Epizoda z modulu ${moduleTitle} — videokurz Claude Code s Patrickem.`;
+  if (moduleTitle) return `Epizoda z modulu ${moduleTitle} — ${SITE.name}.`;
   return DEFAULT_OG_DESCRIPTION;
 }
 
@@ -79,7 +79,7 @@ export async function fetchLessonThumbnail(
   const authUrl = env.BETTER_AUTH_URL?.replace(/\/$/, "") ?? "";
   const referer = authUrl && !authUrl.includes("localhost")
     ? `${authUrl}/`
-    : "https://kurzy.vibecoding.cz/";
+    : `${SITE.url}/`;
 
   const res = await fetch(`https://${host}${signedPath}`, { headers: { Referer: referer } });
   if (!res.ok) {

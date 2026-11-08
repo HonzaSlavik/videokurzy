@@ -107,7 +107,7 @@ leadRoutes.post("/api/leads/newsletter", async (c) => {
   return c.html(
     <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
       <p class="text-green-800 font-medium">
-        Super! Brzy se ozveme s tipy k vibe codingu.
+        Děkujeme, brzy se ozveme.
       </p>
     </div>
   );

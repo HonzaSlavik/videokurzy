@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "hono/jsx";
+import { OPERATOR, SITE } from "../config/site";
 
 interface LayoutProps {
   title?: string;
@@ -31,11 +32,11 @@ const HamburgerIcon = () => (
 );
 
 export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
-  title = "Videokurz Claude Code s Patrickem",
-  description = "Naučte se vibe coding s Claude Code. 10 epizod, od nápadu po deployment.",
+  title = SITE.name,
+  description = SITE.description,
   user,
   noindex,
-  ogUrl = "https://kurzy.vibecoding.cz",
+  ogUrl = SITE.url,
   ogImage,
   ogType = "website",
   children,
@@ -44,14 +45,14 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>{title} | kurzy.vibecoding.cz</title>
+      <title>{`${title} | ${SITE.host}`}</title>
       <meta name="description" content={description} />
       {noindex && <meta name="robots" content="noindex" />}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={ogUrl} />
-      <meta property="og:site_name" content="kurzy.vibecoding.cz" />
+      <meta property="og:site_name" content={SITE.host} />
       <meta property="og:locale" content="cs_CZ" />
       {ogImage && <meta property="og:image" content={ogImage} />}
       {ogImage && <meta property="og:image:alt" content={title} />}
@@ -84,10 +85,10 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       <header class="site-header">
         <div class="container header-inner">
           <a class="brand" href="/">
-            <div class="avatar">kz</div>
+            <div class="avatar">{SITE.monogram}</div>
             <div>
-              <div class="brand-title">kurzy.vibecoding.cz</div>
-              <div class="brand-subtitle">videokurzy vibe codingu</div>
+              <div class="brand-title">{SITE.host}</div>
+              <div class="brand-subtitle">{SITE.tagline}</div>
             </div>
           </a>
           <nav class="nav" aria-label="Hlavní navigace">
@@ -157,17 +158,13 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
       <footer class="site-footer">
         <div class="container footer-inner">
           <div>
-            &copy; 2026{" "}
-            <a href="https://vibecoding.cz" target="_blank" rel="noreferrer">
-              vibecoding.cz
-            </a>
-            {" "}&mdash; Patrick Zandl, IČO 43943420
+            &copy; {new Date().getFullYear()} {SITE.name}, {OPERATOR.name}, IČO {OPERATOR.ico}
           </div>
           <div class="footer-links">
             <a href="/privacy">ochrana osobních údajů</a>
             <a href="/terms">obchodní podmínky</a>
-            <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a>
-            <a href="tel:+420777677077">+420 777 677 077</a>
+            <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>
+            {OPERATOR.phone && <a href={`tel:${OPERATOR.phone.replace(/\s/g, "")}`}>{OPERATOR.phone}</a>}
           </div>
         </div>
       </footer>

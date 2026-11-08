@@ -8,6 +8,7 @@ import { addUserEmail, normalizeEmail } from "../lib/user-emails";
 import { logIdentityEvent } from "../lib/audit";
 import { purchase } from "../db/schema";
 import type { Env } from "../types";
+import { SITE } from "../config/site";
 
 /**
  * Internal (service-to-service) endpoints, guarded by `X-Internal-Secret` header.
@@ -398,7 +399,7 @@ internal.post("/internal/auth/verify-add-email", async (c) => {
 
 /**
  * List active enrollments (purchases) for the caller's session. Consumer
- * worker on vibecoding.cz queries this for the /profil/kurzy dashboard.
+ * worker (e.g. the main website) queries this for a user dashboard.
  */
 internal.get("/internal/user/enrollments", async (c) => {
   const auth = createAuth(c.env, c.executionCtx);
@@ -418,7 +419,7 @@ internal.get("/internal/user/enrollments", async (c) => {
     .filter((r) => !r.expiresAt || r.expiresAt > now)
     .map((r) => ({
       id: String(r.id),
-      title: "Claude Code s Patrickem",
+      title: SITE.name,
       meta: r.expiresAt
         ? `Aktivní do ${r.expiresAt.toLocaleDateString("cs-CZ")}`
         : "Aktivní",

@@ -62,6 +62,7 @@ import {
   listSubjectInvoices,
   markInvoicePaid,
 } from "../lib/fakturoid";
+import { MAIL, OPERATOR, SITE } from "../config/site";
 import { createAndEnqueueInvoiceJob, enqueueInvoiceJob } from "../invoice-queue";
 import { shouldInvoice, paidOnFromDate, paidOnToTimestamp, purchaseToBillingSnapshot } from "../lib/invoicing/jobs";
 import { maskEmail } from "../lib/errors";
@@ -78,8 +79,8 @@ import {
 
 const admin = new Hono<{ Bindings: Env; Variables: Variables }>();
 
-const DEFAULT_WELCOME_MESSAGE = `Ahoj či Dobrý den,
-zřídil jsem Ti účet do mojí vzdělávací AI platformy kurzy.vibecoding.cz. Budu rád, když mi dáš zpětnou vazbu na to, co jsi se tu naučil! Patrick`;
+const DEFAULT_WELCOME_MESSAGE = `Dobrý den,
+zřídil jsem Vám účet na vzdělávací platformě ${SITE.host}. Budu rád za zpětnou vazbu k tomu, co jste se tu naučil(a). ${SITE.author}`;
 
 const AdminUserForm: FC<{
   error?: string;
@@ -211,7 +212,7 @@ const AdminUserForm: FC<{
             class="mt-1"
           />
           <span>
-            <span class="font-medium">Odeslat uvítací e-mail z patrick@vibecoding.cz</span>
+            <span class="font-medium">Odeslat uvítací e-mail z {OPERATOR.email}</span>
             <span class="block text-gray-500">
               Pod tvůj text se automaticky připojí technické informace o účtu, typu přístupu a platnosti.
             </span>
@@ -1088,10 +1089,10 @@ admin.post("/admin/users/new", async (c) => {
       for (const u of result.created) {
         c.executionCtx.waitUntil(
           sendEmail(c.env, {
-            from: "Patrick Zandl <patrick@vibecoding.cz>",
-            replyTo: "patrick@vibecoding.cz",
+            from: MAIL.personalFrom,
+            replyTo: MAIL.replyTo,
             to: u.email,
-            subject: "Tvůj účet na kurzy.vibecoding.cz",
+            subject: `Váš účet na ${SITE.host}`,
             html: adminWelcomeUserHtml({
               personalMessage: welcomeMessage,
               email: u.email,

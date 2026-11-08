@@ -1,3 +1,5 @@
+import { CREDITAS_PAYMENT_ACCOUNT, CREDITAS_VS_PREFIX, FIO_VS_PREFIX, PAYMENT_ACCOUNT } from "../config/payment";
+
 
 // ─── Types ────────────────────────────────────────────────────────
 
@@ -1205,14 +1207,14 @@ export function AdminSettingsForm({
               <input type="radio" name="active_bank" value="fio" checked={activeBank === "fio"} class="h-4 w-4 text-indigo-600" />
               <span class="text-sm">
                 <strong>Fio banka</strong>
-                <span class="block text-xs text-gray-500">VS prefix 33 · 2801585002/2010</span>
+                <span class="block text-xs text-gray-500">VS prefix {FIO_VS_PREFIX} · {PAYMENT_ACCOUNT}</span>
               </span>
             </label>
             <label class={`flex items-center gap-3 flex-1 rounded-md border px-3 py-2 cursor-pointer ${activeBank === "creditas" ? "border-indigo-400 bg-indigo-50" : "border-gray-300 bg-white"}`}>
               <input type="radio" name="active_bank" value="creditas" checked={activeBank === "creditas"} class="h-4 w-4 text-indigo-600" />
               <span class="text-sm">
                 <strong>Banka CREDITAS</strong>
-                <span class="block text-xs text-gray-500">VS prefix 34 · 101014591/2250</span>
+                <span class="block text-xs text-gray-500">VS prefix {CREDITAS_VS_PREFIX} · {CREDITAS_PAYMENT_ACCOUNT}</span>
               </span>
             </label>
           </div>

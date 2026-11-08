@@ -6,13 +6,14 @@ import * as authSchema from "../db/auth-schema";
 import type { Env } from "../types";
 import { ensureUserEmailRecord } from "./user-emails";
 import { sendResendEvent } from "./resend";
+import { MAIL, SITE } from "../config/site";
 
 /** Origins, kam smí magic link po ověření přesměrovat (kromě BETTER_AUTH_URL). */
-export const COMMENTS_TRUSTED_ORIGINS = ["https://www.vibecoding.cz", "https://vibecoding.cz"];
+export const COMMENTS_TRUSTED_ORIGINS: string[] = [...SITE.trustedOrigins];
 
 function courseMagicLinkEmail(url: string) {
   return {
-    from: "Videokurzy <andrea@vibecoding.cz>",
+    from: MAIL.from,
     subject: "Přihlášení do kurzu",
     html: `
                 <h2>Přihlášení do videokurzu</h2>
@@ -29,8 +30,8 @@ function courseMagicLinkEmail(url: string) {
 
 function commentsMagicLinkEmail(url: string) {
   return {
-    from: "Vibecoding.cz <andrea@vibecoding.cz>",
-    subject: "Přihlášení do diskuse na Vibecoding.cz",
+    from: MAIL.from,
+    subject: `Přihlášení do diskuse na ${SITE.name}`,
     html: `
                 <h2>Přihlášení do diskuse</h2>
                 <p>Klikněte na tlačítko níže. Vrátíte se k článku a můžete komentovat pod svým jménem.</p>
@@ -38,7 +39,7 @@ function commentsMagicLinkEmail(url: string) {
                   Přihlásit se do diskuse
                 </a>
                 <p style="margin-top:16px;color:#666;font-size:14px;">
-                  Účet je společný s videokurzy Vibecoding.cz. Odkaz je platný 10 minut. Pokud jste o přihlášení nežádali, tento email ignorujte.
+                  Účet je společný s videokurzy ${SITE.name}. Odkaz je platný 10 minut. Pokud jste o přihlášení nežádali, tento email ignorujte.
                 </p>
               `,
   };
@@ -48,14 +49,14 @@ export function createAuth(env: Env, ctx: ExecutionContext) {
   const db = drizzle(env.DB, { schema: authSchema });
 
   return betterAuth({
-    appName: "Videokurzy",
+    appName: SITE.name,
     baseURL: env.BETTER_AUTH_URL,
     basePath: "/api/auth",
     secret: env.BETTER_AUTH_SECRET,
     // Weby, na které se smí po ověření magic linku vracet (callbackURL).
     // Better Auth na /magic-link/verify kontroluje callbackURL proti tomuto
     // seznamu; bez něj projde jen vlastní origin BETTER_AUTH_URL. Diskuse
-    // pod články na www.vibecoding.cz vrací čtenáře zpět na článek.
+    // pod články na webech ze SITE.trustedOrigins vrací čtenáře zpět na článek.
     trustedOrigins: COMMENTS_TRUSTED_ORIGINS,
     database: drizzleAdapter(db, { provider: "sqlite" }),
 

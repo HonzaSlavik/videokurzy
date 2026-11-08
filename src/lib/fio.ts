@@ -2,6 +2,7 @@
 // Prefix VS = "33" (odlišeno od donations "11" a workshops "22" ve vibecoding-site).
 
 import { FIO_VS_PREFIX } from "../config/payment";
+import { SITE } from "../config/site";
 
 export interface FioTransaction {
   column0: { value: string; name: string; id: number } | null;  // Datum
@@ -104,7 +105,7 @@ export function generateSPD(
   iban: string,
   amount: number,
   vs: string,
-  message: string = "Videokurz vibecoding",
+  message: string = `Videokurz ${SITE.name}`,
 ): string {
   return `SPD*1.0*ACC:${iban}*AM:${amount.toFixed(2)}*CC:CZK*X-VS:${vs}*MSG:${message}`;
 }

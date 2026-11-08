@@ -70,7 +70,7 @@ landing.get("/", async (c) => {
   const priceIndividual = parseInt(cfg.price_individual ?? String(PRICE_INDIVIDUAL), 10);
   const priceOrganization = parseInt(cfg.price_organization ?? String(PRICE_ORGANIZATION), 10);
   const benefitsIndividual = JSON.parse(
-    cfg.benefits_individual ?? '["Přístup ke všem epizodám","Všechny budoucí kurzy v předplatném","Komentáře a Q&A s Patrickem","14 dní na vrácení, bez dotazů"]'
+    cfg.benefits_individual ?? '["Přístup ke všem epizodám","Všechny budoucí kurzy v předplatném","Komentáře a dotazy k lekcím","14 dní na vrácení, bez dotazů"]'
   ) as string[];
   const benefitsOrganization = JSON.parse(
     cfg.benefits_organization ?? '["Neomezený počet zaměstnanců","Přístup podle emailové domény","Faktura v CZK, standardní daňový doklad","Přehled využití pro L&D oddělení"]'
