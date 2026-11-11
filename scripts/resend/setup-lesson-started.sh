@@ -12,7 +12,7 @@ set -euo pipefail
 : "${RESEND_API_KEY:?Nastav RESEND_API_KEY (full-access klíč)}"
 cd "$(dirname "$0")"
 
-FROM="Videokurzy <andrea@vibecoding.cz>"
+FROM="Jak dělat projekty <kurzy@jakdelatprojekty.cz>"
 TPL_NAME="Re-engagement — dokoukej lekci"
 
 id_of() { python3 -c "import sys,json; print(json.load(sys.stdin)['id'])"; }

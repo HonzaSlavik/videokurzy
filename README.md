@@ -1,15 +1,26 @@
-# kurzy.vibecoding.cz
+# kurzy.jakdelatprojekty.cz
 
-> **Vzorový projekt s dvojím účelem.** Tohle je živá platforma, na které běží
-> [kurzy.vibecoding.cz](https://kurzy.vibecoding.cz) — distribuce placených
-> videokurzů vibe codingu. Zároveň slouží jako **referenční / učební projekt pro
-> práci s Claude Code**: ukazuje reálnou produkční kódovou základnu (platby,
-> auth, fakturace, video, e-mailové automatizace) na které se dá demonstrovat
-> AI-asistovaný vývoj — od zadání přes plán po nasazení.
+> Platforma pro videokurzy [Jak dělat projekty](https://jakdelatprojekty.cz):
+> projekty, produkty a inovace v praxi.
 >
-> Není to umělé demo. Je to skutečný byznys, který zároveň učí, jak ho stavět.
+> Fork platformy [tangero/videokurzy](https://github.com/tangero/videokurzy)
+> Patricka Zandla (kurzy.vibecoding.cz), použitý s jeho svolením. Opravy
+> a vylepšení, která se hodí i upstreamu, posíláme zpět jako pull requesty.
 
 ---
+
+## Přizpůsobení provozovatele
+
+Všechno, co se liší mezi provozovateli, je na dvou místech:
+
+- **`src/config/site.ts`**: název, doména, provozovatel (IČO, sídlo, kontakty,
+  plátcovství DPH), admin e-maily, odesílatel e-mailů, bankovní účet.
+  Hodnoty `DOPLNIT` je nutné vyplnit před nasazením.
+- **`src/styles/input.css`**: barvy a fonty (`:root` tokeny) a napojení
+  tříd Tailwindu na značku (`@theme`).
+
+Texty úvodní stránky, obchodních podmínek a zásad ochrany osobních údajů
+obsahují zástupné texty v hranatých závorkách (`[…]`) k doplnění.
 
 ## Co projekt umí
 
@@ -128,7 +139,7 @@ npm run dev            # Tailwind watch + wrangler dev (http://localhost:8787)
 ## Nasazení
 
 Produkce běží na Cloudflare Workeru **`videokurzy`** (default, bez `--env`),
-napojeném na `kurzy.vibecoding.cz`.
+napojeném na `kurzy.jakdelatprojekty.cz`.
 
 ```bash
 npm run deploy
@@ -168,4 +179,4 @@ v [`CLAUDE.md`](./CLAUDE.md) (instrukce pro Claude Code i lidské přispěvatele
 
 ---
 
-Projekt Patricka Zandla a Andrey Maloveczké · [vibecoding.cz](https://vibecoding.cz)
+[Jak dělat projekty](https://jakdelatprojekty.cz) · postaveno na platformě [tangero/videokurzy](https://github.com/tangero/videokurzy) Patricka Zandla a Andrey Maloveczké

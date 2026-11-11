@@ -1,5 +1,6 @@
 import { SELF } from "cloudflare:test";
 import { describe, expect, it } from "vitest";
+import { OPERATOR } from "../../src/config/site";
 
 /**
  * Povinné náležitosti e-shopu podle požadavků platební brány + kontrola, že
@@ -15,9 +16,10 @@ describe("obchodní podmínky — právní náležitosti", () => {
 
   it("uvádí platné IČO, sídlo a kontakty", async () => {
     const html = await terms();
-    expect(html).toContain("43943420");
-    expect(html).toContain("Brandýs nad Labem");
-    expect(html).toContain("+420 777 677 077");
+    expect(html).toContain(`IČO ${OPERATOR.ico}`);
+    expect(html).toContain(OPERATOR.address);
+    expect(html).toContain(OPERATOR.email);
+    if (OPERATOR.phone) expect(html).toContain(OPERATOR.phone);
     // IČO 66192751 neexistuje v ARESu — nesmí se vrátit.
     expect(html).not.toContain("66192751");
   });

@@ -1,12 +1,23 @@
 import type { FC } from "hono/jsx";
 import { Layout } from "./layout";
 import { formatCzk, type Prices } from "../lib/prices";
+import { OPERATOR, OPERATOR_POSTAL, SITE } from "../config/site";
+
+/** Věta o DPH podle konfigurace provozovatele. */
+const VatStatement: FC = () =>
+  OPERATOR.vatPayer === null ? (
+    <>[uvést, zda je provozovatel plátcem DPH]</>
+  ) : OPERATOR.vatPayer ? (
+    <>Provozovatel je plátcem DPH{OPERATOR.dic ? `, DIČ ${OPERATOR.dic}` : ""}.</>
+  ) : (
+    <>Provozovatel není plátcem DPH.</>
+  );
 
 /**
  * Datum účinnosti aktuálního znění. Uvádí se na stránce i v potvrzovacím
  * e-mailu, aby bylo doložitelné, které znění zákazník dostal.
  */
-export const TERMS_EFFECTIVE_DATE = "25. 10. 2026";
+export const TERMS_EFFECTIVE_DATE = "[datum účinnosti]";
 
 /**
  * Samotný text podmínek, bez stránkového obalu. Sdílí ho `/terms` i potvrzovací
@@ -21,18 +32,18 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
       <h1>Obchodní podmínky</h1>
       <p>Poslední aktualizace: {TERMS_EFFECTIVE_DATE}</p>
       <p>
-        Provozovatel: <strong>Patrick Zandl</strong>, IČO 43943420,
-        se sídlem U Přelízky 1126/6, 250 01 Brandýs nad Labem-Stará Boleslav.
-        Provozovatel není plátcem DPH.
+        Provozovatel: <strong>{OPERATOR.name}</strong>, IČO {OPERATOR.ico},
+        se sídlem {OPERATOR.address}, {OPERATOR.zip} {OPERATOR.city}.
+        {" "}<VatStatement />
         <br />
-        Kontakt: <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a>,
-        tel. <a href="tel:+420777677077">+420 777 677 077</a>
+        Kontakt: <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>
+        {OPERATOR.phone && <>, tel. <a href={`tel:${OPERATOR.phone.replace(/\s/g, "")}`}>{OPERATOR.phone}</a></>}
       </p>
 
       <h2>1. Předmět smlouvy</h2>
       <p>
-        Tyto podmínky upravují nákup přístupu k videokurzům dostupným na
-        kurzy.vibecoding.cz (dále „platforma"). Uzavřením objednávky zákazník
+        Tyto podmínky upravují nákup přístupu k videokurzům dostupným na{" "}
+        {SITE.host} (dále „platforma"). Uzavřením objednávky zákazník
         souhlasí s těmito podmínkami.
       </p>
 
@@ -131,7 +142,7 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
       <p>
         Lhůta běží ode dne uzavření smlouvy. Pro dodržení lhůty stačí odstoupení
         odeslat před jejím uplynutím. Odstoupení lze zaslat e-mailem na{" "}
-        <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a> nebo
+        <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a> nebo
         poštou na adresu sídla uvedenou výše — postačí jakékoli jednoznačné
         prohlášení, formulář níže je jen pomůcka.
       </p>
@@ -148,12 +159,11 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
       </p>
       <blockquote class="border-l-4 border-gray-300 bg-gray-50 pl-4 pr-4 py-3 my-4 text-sm">
         <p>
-          Adresát: Patrick Zandl, U Přelízky 1126/6, 250 01 Brandýs nad
-          Labem-Stará Boleslav, e-mail: patrick@vibecoding.cz
+          Adresát: {OPERATOR_POSTAL}, e-mail: {OPERATOR.email}
         </p>
         <p>
           Oznamuji, že tímto odstupuji od smlouvy o poskytnutí přístupu k
-          videokurzům na kurzy.vibecoding.cz.
+          videokurzům na {SITE.host}.
         </p>
         <p>Datum objednání: …</p>
         <p>Jméno a příjmení spotřebitele: …</p>
@@ -172,6 +182,8 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
       </p>
 
       <h2 id="refund">5. Vrácení peněz (refund)</h2>
+
+      <p>[ověřit: podmínky dobrovolné garance v tomto článku odpovídají vaší politice vracení peněz]</p>
 
       <p>
         Následující tabulka popisuje naši <strong>dobrovolnou garanci</strong>,
@@ -214,8 +226,8 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
 
       <p>
         Žádost o refund zasílejte na{" "}
-        <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a>.
-        Refund vyřizujeme do 5 pracovních dnů. Po schválení je přístup
+        <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>.
+        Refund vyřizujeme do [lhůta] pracovních dnů. Po schválení je přístup
         okamžitě deaktivován.
       </p>
 
@@ -243,7 +255,7 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
       <h2>8. Duševní vlastnictví</h2>
       <p>
         Veškerý obsah platformy (videa, texty, materiály) je duševním
-        vlastnictvím Patricka Zandla. Licence opravňuje výhradně k osobnímu
+        vlastnictvím [vlastník obsahu]. Licence opravňuje výhradně k osobnímu
         sledování. Šíření, kopírování nebo opětovné zveřejňování obsahu bez
         písemného souhlasu je zakázáno.
       </p>
@@ -279,15 +291,14 @@ export const TermsContent: FC<{ prices: Prices }> = ({ prices }) => (
 
       <h2>11. Kontakt</h2>
       <p>
-        <strong>Patrick Zandl</strong>, IČO 43943420
+        <strong>{OPERATOR.name}</strong>, IČO {OPERATOR.ico}
         <br />
-        U Přelízky 1126/6, 250 01 Brandýs nad Labem-Stará Boleslav
+        {OPERATOR.address}, {OPERATOR.zip} {OPERATOR.city}
         <br />
-        Email: <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a>
+        Email: <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>
+        {OPERATOR.phone && <><br />Telefon: <a href={`tel:${OPERATOR.phone.replace(/\s/g, "")}`}>{OPERATOR.phone}</a></>}
         <br />
-        Telefon: <a href="tel:+420777677077">+420 777 677 077</a>
-        <br />
-        Web: <a href="https://vibecoding.cz" target="_blank" rel="noreferrer">vibecoding.cz</a>
+        Web: <a href={SITE.url}>{SITE.host}</a>
       </p>
   </>
 );

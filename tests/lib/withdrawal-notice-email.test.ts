@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { purchaseConfirmedHtml, isConsumerPurchase } from "../../src/lib/email";
+import { OPERATOR, OPERATOR_POSTAL } from "../../src/config/site";
 
 /**
  * § 1824a odst. 1 obč. zák.: poučení o právu na odstoupení včetně vzorového
@@ -30,8 +31,8 @@ describe("poučení o odstoupení na trvalém nosiči", () => {
     expect(html).toMatch(/odstupuji od smlouvy/i);
     expect(html).toMatch(/14 dnů/);
     // Adresát musí být ve formuláři identifikovatelný, bez dohledávání na webu.
-    expect(html).toContain("U Přelízky 1126/6");
-    expect(html).toContain("patrick@vibecoding.cz");
+    expect(html).toContain(OPERATOR_POSTAL);
+    expect(html).toContain(OPERATOR.email);
     // Použití formuláře je dobrovolné.
     expect(html).toMatch(/není povinné/i);
   });

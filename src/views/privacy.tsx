@@ -1,20 +1,21 @@
 import type { FC } from "hono/jsx";
 import { Layout } from "./layout";
+import { OPERATOR, SITE } from "../config/site";
 
 export const PrivacyPage: FC = () => (
   <Layout title="Zásady ochrany osobních údajů">
     <div class="max-w-3xl mx-auto px-4 py-12 prose">
       <h1>Zásady ochrany osobních údajů</h1>
-      <p>Poslední aktualizace: 30. 6. 2026</p>
+      <p>Poslední aktualizace: [datum účinnosti]</p>
 
       <h2>1. Správce údajů</h2>
       <p>
-        Správcem osobních údajů je <strong>Patrick Zandl</strong>, IČO 43943420,
-        se sídlem U Přelízky 1126/6, 250 01 Brandýs nad Labem-Stará Boleslav,
-        provozovatel webu vibecoding.cz a kurzy.vibecoding.cz.
+        Správcem osobních údajů je <strong>{OPERATOR.name}</strong>, IČO {OPERATOR.ico},
+        se sídlem {OPERATOR.address}, {OPERATOR.zip} {OPERATOR.city},
+        provozovatel webu {SITE.host}.
         <br />
-        Kontakt: <a href="mailto:patrick@vibecoding.cz">patrick@vibecoding.cz</a>,
-        tel. <a href="tel:+420777677077">+420 777 677 077</a>
+        Kontakt: <a href={`mailto:${OPERATOR.email}`}>{OPERATOR.email}</a>
+        {OPERATOR.phone && <>, tel. <a href={`tel:${OPERATOR.phone.replace(/\s/g, "")}`}>{OPERATOR.phone}</a></>}
       </p>
 
       <h2>2. Jaké údaje zpracováváme</h2>
@@ -68,8 +69,8 @@ export const PrivacyPage: FC = () => (
 
       <h2>6. Doba uchovávání</h2>
       <p>
-        Údaje uchováváme po dobu trvání předplatného a dalších 3 let pro účely
-        účetnictví a případných reklamací.
+        Údaje uchováváme po dobu trvání předplatného a dalších [doba uchování]
+        pro účely účetnictví a případných reklamací.
       </p>
 
       <h2>7. Vaše práva</h2>
@@ -89,7 +90,7 @@ export const PrivacyPage: FC = () => (
 
       <h2>8. Kontakt</h2>
       <p>
-        Pro uplatnění práv nebo dotazy: <strong>patrick@vibecoding.cz</strong>
+        Pro uplatnění práv nebo dotazy: <strong>{OPERATOR.email}</strong>
       </p>
 
       <h2>9. Cookies</h2>

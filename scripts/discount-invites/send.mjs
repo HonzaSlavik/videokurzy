@@ -4,10 +4,10 @@
 // Použití:
 //   RESEND_API_KEY=re_xxx node scripts/discount-invites/send.mjs \
 //     --csv scripts/discount-invites/out/invites.csv \
-//     --from "Videokurzy <andrea@vibecoding.cz>" \
-//     --subject "Sleva 50 % na videokurz Claude Code" \
-//     --signature "Tým vibecoding.cz" \
-//     [--reply-to "andrea@vibecoding.cz"] [--dry-run] [--limit 5]
+//     --from "Jak dělat projekty <kurzy@jakdelatprojekty.cz>" \
+//     --subject "[předmět e-mailu]" \
+//     --signature "Jak dělat projekty" \
+//     [--reply-to "kurzy@jakdelatprojekty.cz"] [--dry-run] [--limit 5]
 //
 // CSV musí mít hlavičku: email,token,url
 //
@@ -24,11 +24,11 @@ function arg(name, fallback) {
 
 const csvPath = arg("csv", "scripts/discount-invites/out/invites.csv");
 const from = arg("from");
-const subject = arg("subject", "Sleva 50 % na videokurz Claude Code");
+const subject = arg("subject", "[předmět e-mailu]");
 const replyToRaw = arg("reply-to", null);
 const replyTo = replyToRaw && replyToRaw !== true ? replyToRaw : null;
-const signatureRaw = arg("signature", "Tým vibecoding.cz");
-const signature = signatureRaw === true ? "Tým vibecoding.cz" : signatureRaw;
+const signatureRaw = arg("signature", "Jak dělat projekty");
+const signature = signatureRaw === true ? "Jak dělat projekty" : signatureRaw;
 const dryRun = process.argv.includes("--dry-run");
 const limitRaw = arg("limit", null);
 const limit = limitRaw && limitRaw !== true ? parseInt(limitRaw, 10) : Infinity;
@@ -51,13 +51,11 @@ if (!header || !header.startsWith("email,token,url")) {
 }
 
 function htmlBody(url, signature) {
-  return `<!doctype html><html lang="cs"><body style="font-family:system-ui,sans-serif;line-height:1.6;color:#1f2937">
-  <p>Ahoj,</p>
-  <p>jako absolventovi placeného kurzu na vibecoding.cz pro tebe mám <strong>osobní slevu 50 %</strong>
-  na videokurz Claude Code na <a href="https://kurzy.vibecoding.cz">kurzy.vibecoding.cz</a>.</p>
-  <p>Sleva se aktivuje automaticky přes tvůj osobní odkaz — nic nemusíš opisovat:</p>
-  <p><a href="${url}" style="display:inline-block;background:#4f46e5;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none">Získat kurz se slevou 50 %</a></p>
-  <p style="font-size:13px;color:#6b7280">Odkaz je osobní a jednorázový. Nabídka platí jen do uvedeného data.</p>
+  return `<!doctype html><html lang="cs"><body style="font-family:system-ui,sans-serif;line-height:1.6;color:#2e2c27">
+  <p>[oslovení]</p>
+  <p>[text nabídky slevy na <a href="https://kurzy.jakdelatprojekty.cz">kurzy.jakdelatprojekty.cz</a>]</p>
+  <p><a href="${url}" style="display:inline-block;background:#7a6626;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none">[text tlačítka]</a></p>
+  <p style="font-size:13px;color:#736e62">Odkaz je osobní a jednorázový. Nabídka platí jen do uvedeného data.</p>
   <p>${signature}</p>
   </body></html>`;
 }

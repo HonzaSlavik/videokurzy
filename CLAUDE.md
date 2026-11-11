@@ -87,69 +87,16 @@ account klíč Stream API nepřijímá a token key přes API nejde získat. Libr
 pro lekci vždy přes `resolveBunnyLibrary()` v `src/lib/bunny-library.ts`,
 nikdy napřímo `env.BUNNY_*`.
 
-## Novinky v CC — zdroj od Week 38/2026
-Anthropic od Week 37 nevydává oficiální týdenní přehledy (whats-new RSS stojí).
-Článek vzniká ze **changelogu** (CHANGELOG.md, data vydání ze stránky changelogu
-v dokumentaci; GitHub releases ne — chybí v nich verze) a z **rozdílů v dokumentaci**
-(týdenní snímky v KV `cc-docs:*`). Kód: `src/lib/cc-news/{changelog-source,classify,
-docs-snapshot,weekly,changelog-week}.ts`, tabulka `cc_change_item` (témata, význam,
-návaznosti; stránky `/novinky-cc/temata`).
-- Denní cron synchronizuje changelog a snímek dokumentace; v pondělí zmrazí týden
-  a založí vydání `/changelog/<rok>-w<NN>` za minulý týden → fronta → schvalovací e-mail.
-- Zpětné týdny ručně: `/admin/api/cc-news/changelog-week?week=2026-w39`, **postupně**
-  (rozsah verzí navazuje na konec posledního vydání).
-- **Automatické vydávání (od 18. 10. 2026): lidské schválení před publikací se NEvyžaduje**
-  (rozhodnutí Patricka, nevracet jako „chybu“). Přepínač `cc_news_autopublish` v `/admin/settings`
-  (výchozí zapnuto): český článek se po napsání sám publikuje (`autoPublishDraft`), přijde e-mail
-  „Vydáno“ s odkazy na úpravy a nálezy kontrol; anglické přehledy se po úspěšném buildu webu samy
-  sloučí (fronta `cc-news.en-merge`, `mergeSitePullRequest`). Úpravy zpětně: český text admin →
-  Newsletter, anglický Keystatic na vibecoding.cz/keystatic. Newsletter předplatitelům zůstává ruční.
-- Styl článku = skill „Technický článek" (`WRITER_SYSTEM` v `weekly.ts`). Názor
-  v 1. osobě ano, **vymyšlené osobní zkušenosti autora ne**.
-- Nová stránka dokumentace / velký nový oddíl = povinně hlavní novinka.
-- Oficiální přehled k týdnu, který už má vydání ze changelogu, se nezakládá
-  (stejný slug `<rok>-w<NN>-novinky`) — viz dedupe v `detect.ts`.
-- Lokální experimenty a porovnání: `scripts/cc-news-changelog/`, `docs/cc-news-changelog/`.
-- Anglická verze (vibecoding.cz/en): po schválení české verze fronta `cc-news.en-weekly`
-  napíše článek anglicky z uloženého výběru (`cc-news:selection:<itemId>`, ne překladem)
-  a otevře PR do `tangero/vibecoding-site` (`english.ts`, secret `VIBECODING_SITE_GITHUB_TOKEN`),
-  který se při automatickém vydávání sám sloučí po úspěšném buildu.
-  Kontrakt souboru je v `docs/english-section.md` webu. Nanečisto:
-  `GET /admin/api/cc-news/english?itemId=…`. Více nástrojů: `docs/cc-news-changelog/vice-zdroju.md`.
-- Další sledované nástroje (Grok Build, Codex CLI, Antigravity CLI, Muse Code): `cc_change_item.tool`
-  (dotazy článků a stránek témat Claude Code VŽDY filtrují `tool = 'claude-code'`; mapa ekosystému má vlastní dotazy), sběr v `src/lib/tools/`,
-  denní cron, týdenní výběr do KV `tools:week:<tool>:<týden>`, admin `/admin/tools/grok-build`.
-  Týdenní výběr se uloží i jako `cc-news:selection:<tool>-<rok>-w<NN>`; z něj tlačítko v adminu
-  píše anglický přehled (PR do webu, nástroj musí být ve `WEEKLY_TOOLS` webu). Bez českého článku.
-  Při automatickém vydávání se zařadí sám po sestavení týdne (fronta `tools.week`), jen u nástrojů
-  s `englishWeekly` v `src/lib/tools/registry.ts` (od 18. 10. 2026 všechny čtyři, Muse Code od 19. 10.; nový nástroj nejdřív do WEEKLY_TOOLS webu).
-  Codex a Antigravity se sbírají z GitHub releases (`src/lib/tools/github-releases.ts`), Muse Code
-  z `changelog.md` dokumentace s daty z npm a GitHubu (`src/lib/tools/muse-code.ts`); jeho dokumentace
-  nemá v sitemap `lastmod`, snímek ji proto stahuje denně a změnu pozná podle hashe obsahu.
-- **Osobní asistenti (Grok Bot, od 25. 10. 2026):** `TOOLS[].kind = "assistant"`, mimo témata, ekosystém
-  a dohánění (`CODING_TOOLS`); řádky v `cc_change_item` mají `topic = NULL`, třídění CC je přeskočí.
-  Changelog `x.ai/changelog/bot` čteme přes Exa contents API (`EXA_API_KEY`), ochranu proti botům
-  neobcházíme. Týdně český zápis do webu `/novinky/<tool>/` (`src/lib/tools/assistant-cs.ts`, fronta
-  `tools.assistant-week`); oblasti v `ASSISTANT_AREAS` musí sedět s `ASSISTANTS` webu. Viz `docs/cc-news.md`.
-  Od 26. 10. 2026 (rozhodnutí Patricka) je zápis **redakční článek** ze skillu „Technický článek“ psaný z ověřených
-  bodů (`ARTICLE_SYSTEM_CS`), ne seznam bodů; takto vznikají všechny další. Popis nástroje do článku nepatří, je
-  v pevné hlavičce webu `ASSISTANTS[tool].about` s odkazem do rubriky.
-- **Mapa ekosystému `/novinky-cc/ekosystem`** (od 24. 10. 2026, rozhodnutí Patricka, zkušebně): všechny nástroje
-  vedle sebe, ne už „jen srovnání na stránkách témat“. Karta týdne pro každý nástroj (Claude Code = poslední český
-  článek, ostatní = krátký český souhrn 3–5 vět), mapa témat × nástroje za 4 týdny (`ToolFocus.shares`) a dohánění.
-  Souhrn píše fronta `tools.week-cs` (`src/lib/tools/week-cs.ts`) z ověřeného výběru týdne po `tools.week`,
-  do KV `tools:week-cs:<tool>:<rok>-wNN`; nový výběr ho zneplatní. Celý český článek o ostatních nástrojích se nepíše.
-  Zpětně: `POST /admin/api/tools/week-cs?weeks=4` (všechny nástroje), stav týdne `GET …?tool=codex&week=2026-w42`.
-  Pruh „Ostatní nástroje tento týden“ je i na `/novinky-cc`. Data a loader: `src/lib/cc-news/ecosystem.ts`.
-  Počty jsou **položky changelogu**, ne „změny“: mezi nástroji se nedají srovnávat (Muse Code píše kolem 100
-  položek na vydání), proto stránka ukazuje i počet vydání a průměr na vydání. Changelog Muse Code nemá data;
-  verze bez data z npm/GitHubu mají datum jen jako horní mez. Synchronizace to zapisuje do KV
-  `tools:dates-approx:<tool>` (`ToolDates`) a karta nástroje to čtenáři vysvětlí. Data v `cc_change_item` neměnit.
-- Stránka tématu `/novinky-cc/temata/<téma>` (`topic-history.ts`, `views/cc-topic.tsx`): týdenní osa od vzniku
-  tématu, detail týdne (`?tyden=2026-w41`), detail pojmu napříč nástroji (`?pojem=PreToolUse`), srovnání
-  s ostatními nástroji podle podílu na jejich změnách, slovník identifikátorů z changelogu a milníky.
-  Cache v KV na hodinu. Box „Nejnovější na vibecoding.cz“ bere jen rubriku hlavního nástroje z RSS feedu
-  webu (`site-articles.ts`); odkazy na tahák vibecoding.cz mají přednost před anglickou dokumentací.
+## Značka a provozovatel
+Údaje provozovatele, doména, admin e-maily a odesílatel jsou v `src/config/site.ts`,
+barvy v `src/styles/input.css` (`:root` tokeny a `@theme`, kde je Tailwind `indigo-*`
+přemapovaný na zlatou škálu a `gray-*` na teplé neutrály). Nic z toho nepiš natvrdo
+do šablon. Design pravidla jsou v `.impeccable.md`.
+
+## Upstream
+Repo je fork `tangero/videokurzy`. Remote `upstream` slouží jen ke stahování
+(push je zablokovaný). Do upstreamu nikdy nepushuj; vylepšení pro Patricka se
+posílají jako pull request z forku.
 
 ## Secrets a externí API
 - `.dev.vars` obsahuje **placeholder** hodnoty (`BUNNY_LIBRARY_ID="smoke_test"`,
@@ -162,7 +109,7 @@ návaznosti; stránky `/novinky-cc/temata`).
 
 ## Deploy infrastructure
 - Produkce běží na Cloudflare worker **`videokurzy`** (default, bez `--env`),
-  bound na `kurzy.vibecoding.cz`.
+  bound na `kurzy.jakdelatprojekty.cz`.
 - Secrets a non-sensitive vars (např. `COOKIE_DOMAIN`, `BUNNY_PULL_ZONE`) se
   nastavují v Cloudflare dashboardu (Workers & Pages → videokurzy → Settings →
   Variables and Secrets). **Ne** přes `wrangler secret put` — to historicky

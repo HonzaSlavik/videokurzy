@@ -5,9 +5,9 @@
 //   node scripts/discount-invites/generate.mjs ...
 // Pokud by starší Node import .ts odmítl, použij:
 //   npx tsx scripts/discount-invites/generate.mjs \
-//     --csv emails.csv --percent 50 --batch vibecoding-2026-06 \
+//     --csv emails.csv --percent 50 --batch kampan-2026-11 \
 //     --label "Osobní sleva pro absolventy" --expires 2026-12-31 \
-//     --base https://kurzy.vibecoding.cz
+//     --base https://kurzy.jakdelatprojekty.cz
 //
 // Vstup CSV: jeden e-mail na řádek (volitelně sloupec "email" s hlavičkou).
 // Výstupy do scripts/discount-invites/out/:
@@ -35,7 +35,7 @@ const percent = parseInt(arg("percent", "50"), 10);
 const batch = arg("batch", "default");
 const label = arg("label", null);
 const expiresRaw = arg("expires", null);
-const baseUrl = arg("base", "https://kurzy.vibecoding.cz");
+const baseUrl = arg("base", "https://kurzy.jakdelatprojekty.cz");
 
 const expiresAt = expiresRaw ? new Date(`${expiresRaw}T23:59:59.000Z`) : null;
 

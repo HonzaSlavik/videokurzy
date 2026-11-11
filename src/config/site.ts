@@ -37,8 +37,13 @@ export const SITE = {
 export const OPERATOR = {
   name: "DOPLNIT",
   ico: "DOPLNIT",
-  /** DIČ, pokud je provozovatel plátce DPH; jinak prázdné. */
+  /** DIČ (vyplnit, pokud ho provozovatel má). */
   dic: "" as string,
+  /**
+   * Je provozovatel plátce DPH? Uvádí se v obchodních podmínkách.
+   * null = zatím nevyplněno (na webu se ukáže zástupný text).
+   */
+  vatPayer: null as boolean | null,
   address: "DOPLNIT",
   city: "DOPLNIT",
   zip: "DOPLNIT",

@@ -13,7 +13,7 @@ set -euo pipefail
 : "${RESEND_API_KEY:?Nastav RESEND_API_KEY (full-access klíč)}"
 cd "$(dirname "$0")"
 
-FROM="Videokurzy <andrea@vibecoding.cz>"
+FROM="Jak dělat projekty <kurzy@jakdelatprojekty.cz>"
 
 id_by_name() {
   resend templates list --json | python3 -c \

@@ -1,6 +1,6 @@
 # Osobní slevové odkazy
 
-Postup pro rozeslání 50% slevy lidem z jiného systému (vibecoding.cz).
+Postup pro rozeslání osobních slevových odkazů lidem z jiného systému.
 
 ## 1. Připrav CSV e-mailů
 
@@ -16,9 +16,9 @@ clovek2@example.cz
 
 ```bash
 node scripts/discount-invites/generate.mjs \
-  --csv emaily.csv --percent 50 --batch vibecoding-2026-06 \
+  --csv emaily.csv --percent 50 --batch kampan-2026-11 \
   --label "Osobní sleva pro absolventy" --expires 2026-12-31 \
-  --base https://kurzy.vibecoding.cz
+  --base https://kurzy.jakdelatprojekty.cz
 ```
 
 (Pokud by starší Node odmítl import `.ts`, použij `npx tsx scripts/discount-invites/generate.mjs ...`.)
@@ -37,7 +37,7 @@ Nejdřív dry-run a malý limit:
 
 ```bash
 node scripts/discount-invites/send.mjs --csv scripts/discount-invites/out/invites.csv \
-  --from "Videokurzy <andrea@vibecoding.cz>" --signature "Tým vibecoding.cz" --dry-run --limit 3
+  --from "Jak dělat projekty <kurzy@jakdelatprojekty.cz>" --signature "Jak dělat projekty" --dry-run --limit 3
 ```
 
 Pak ostře:
@@ -45,13 +45,13 @@ Pak ostře:
 ```bash
 RESEND_API_KEY=re_xxx node scripts/discount-invites/send.mjs \
   --csv scripts/discount-invites/out/invites.csv \
-  --from "Videokurzy <andrea@vibecoding.cz>" \
-  --subject "Sleva 50 % na videokurz Claude Code" \
-  --signature "Tým vibecoding.cz"
+  --from "Jak dělat projekty <kurzy@jakdelatprojekty.cz>" \
+  --subject "[předmět e-mailu]" \
+  --signature "Jak dělat projekty"
 ```
 
-Volitelně `--reply-to "andrea@vibecoding.cz"` a `--limit N`. Podpis v patičce
-e-mailu řídí `--signature` (výchozí `"Tým vibecoding.cz"`) — ať sedí s `--from`.
+Volitelně `--reply-to "kurzy@jakdelatprojekty.cz"` a `--limit N`. Podpis v patičce
+e-mailu řídí `--signature` (výchozí `"Jak dělat projekty"`) — ať sedí s `--from`.
 `--limit N` počítá úspěšně odeslané e-maily (ne pokusy).
 
 Pozn.: ostrý `RESEND_API_KEY` žije jen v Cloudflare; sem se dodává za běhu. Tvar

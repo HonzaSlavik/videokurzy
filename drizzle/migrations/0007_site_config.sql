@@ -5,5 +5,5 @@ CREATE TABLE `site_config` (
 INSERT INTO `site_config` (`key`, `value`) VALUES
   ('price_individual', '2000'),
   ('price_organization', '15000'),
-  ('benefits_individual', '["Přístup ke všem epizodám","Všechny budoucí kurzy v předplatném","Komentáře a Q&A s Patrickem","14 dní na vrácení, bez dotazů"]'),
-  ('benefits_organization', '["Neomezený počet zaměstnanců","Přístup podle emailové domény","Faktura v CZK, standardní daňový doklad","Přehled využití pro L&D oddělení"]');
+  ('benefits_individual', '["[výhoda 1]","[výhoda 2]","[výhoda 3]","[výhoda 4]"]'),
+  ('benefits_organization', '["[výhoda firemní licence 1]","[výhoda firemní licence 2]","[výhoda firemní licence 3]"]');
