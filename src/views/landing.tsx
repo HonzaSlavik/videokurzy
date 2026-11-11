@@ -495,7 +495,7 @@ export const LandingPage: FC<LandingProps> = ({
         </div>
         <div class="bio">
           <div class="bio-photo">
-            <div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--surface, #f3f4f6);color:var(--muted)">
+            <div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--surface, #f3f1ec);color:var(--muted)">
               [fotka lektora]
             </div>
             <span>[kontaktní e-mail]</span>

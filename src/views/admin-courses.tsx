@@ -59,7 +59,7 @@ export function AdminNav({ active }: { active: string }) {
           // Barva textu je inline, protože globální `a { color: var(--accent) }`
           // (Tailwind v4, nevrstvené pravidlo) by jinak přebilo `text-*` utility
           // a text by byl zelený i na tmavém pozadí (nečitelné).
-          style={active === l.href ? "color: #fff" : "color: #374151"}
+          style={active === l.href ? "color: #fff" : "color: #45423b"}
           class={`px-4 py-2 rounded-t-lg text-sm font-medium no-underline transition-colors ${
             active === l.href
               ? "bg-emerald-700"

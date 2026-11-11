@@ -1,5 +1,35 @@
 @import "tailwindcss";
 
+/* Napojení utility tříd Tailwindu na značku.
+   Šablony (checkout, admin, …) používají třídy indigo-* a gray-*; tady je
+   přemapujeme na zlatou škálu a teplé neutrály, takže změna značky je jen
+   v tomto souboru. Odstín 600 = --accent, 700 = --accent-2, 500 = --brand. */
+@theme {
+  --color-indigo-50: #faf7ee;
+  --color-indigo-100: #f3edd9;
+  --color-indigo-200: #e6dab4;
+  --color-indigo-300: #d4c088;
+  --color-indigo-400: #bda35d;
+  --color-indigo-500: #a1873c;
+  --color-indigo-600: #7a6626;
+  --color-indigo-700: #5e4e1c;
+  --color-indigo-800: #4a3e17;
+  --color-indigo-900: #3a3112;
+  --color-indigo-950: #211c0a;
+
+  --color-gray-50: #faf9f6;
+  --color-gray-100: #f3f1ec;
+  --color-gray-200: #e6e3db;
+  --color-gray-300: #d3cfc4;
+  --color-gray-400: #a8a396;
+  --color-gray-500: #736e62;
+  --color-gray-600: #5d5a52;
+  --color-gray-700: #45423b;
+  --color-gray-800: #2e2c27;
+  --color-gray-900: #1f1d18;
+  --color-gray-950: #12110e;
+}
+
 /* ==========================================================================
    Design tokens + komponenty — brand kurzy.vibecoding.cz
 
@@ -15,27 +45,31 @@
 
 :root {
   color-scheme: light;
-  --bg: #f7f6f3;
-  --bg-2: #f1efe8;
+  /* Paleta Jak dělat projekty: zlatá značka + teplé neutrály.
+     Kontrasty (WCAG AA): accent na bílé 5,6:1, na --bg 5,1:1;
+     bílý text na --header-bg 5,6:1, na --footer-bg 11:1. */
+  --bg: #f7f5ef;
+  --bg-2: #f2efe6;
   --surface: #ffffff;
   --surface-dim: rgba(255,255,255,0.7);
-  --ink: #141413;
-  --ink-soft: #2a2925;
+  --ink: #1f1d18;
+  --ink-soft: #2e2c27;
   --muted: #5d5a52;
-  --accent: #2f7a5b;
-  --accent-2: #1f4f3b;
+  --brand: #a1873c;          /* značková zlatá: plochy, ikony, ne text */
+  --accent: #7a6626;         /* odkazy, tlačítka, text v akcentu */
+  --accent-2: #5e4e1c;       /* hover */
   --on-accent: #ffffff;
-  --border: rgba(20,20,19,0.12);
-  --border-strong: rgba(20,20,19,0.24);
-  --shadow: 0 16px 40px rgba(13,12,10,0.08);
-  --shadow-sm: 0 6px 18px rgba(20,20,19,0.06);
-  --shadow-lg: 0 30px 80px rgba(13,12,10,0.14);
-  --accent-subtle: rgba(47,122,91,0.06);
-  --accent-muted: rgba(47,122,91,0.08);
-  --accent-light: rgba(47,122,91,0.12);
-  --accent-medium: rgba(47,122,91,0.15);
-  --accent-hover: rgba(47,122,91,0.18);
-  --accent-border: rgba(47,122,91,0.3);
+  --border: rgba(31,29,24,0.12);
+  --border-strong: rgba(31,29,24,0.24);
+  --shadow: 0 16px 40px rgba(31,29,24,0.08);
+  --shadow-sm: 0 6px 18px rgba(31,29,24,0.06);
+  --shadow-lg: 0 30px 80px rgba(31,29,24,0.14);
+  --accent-subtle: rgba(161,135,60,0.07);
+  --accent-muted: rgba(161,135,60,0.10);
+  --accent-light: rgba(161,135,60,0.14);
+  --accent-medium: rgba(161,135,60,0.18);
+  --accent-hover: rgba(161,135,60,0.22);
+  --accent-border: rgba(122,102,38,0.35);
   --warning-bg: rgba(255,207,115,0.3);
   --warning-text: #7a5a12;
   --warning-border: rgba(255,207,115,0.8);
@@ -44,16 +78,23 @@
   --error-bg: #fef2f2;
   --error-border: #fca5a5;
   --error-text: #991b1b;
-  --header-bg: rgba(247,246,243,0.85);
+  --header-bg: #7a6626;      /* ztmavená zlatá, bílý text */
+  --on-header: #ffffff;
+  --on-header-muted: rgba(255,255,255,0.82);
+  --footer-bg: #3a3833;
+  --on-footer: #f7f5ef;
+  --on-footer-muted: rgba(247,245,239,0.78);
   --hover-bg: rgba(255,255,255,0.6);
-  --code-bg: #f5f3ef;
-  --code-ink: #d44a3c;
+  --code-bg: #f3f1ec;
+  --code-ink: #9a3b2c;
   --font-body: "Space Grotesk", system-ui, -apple-system, "Helvetica Neue", sans-serif;
   --font-head: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
 * { box-sizing: border-box; }
+/* Zaškrtávátka, přepínače a posuvníky v barvě značky (jinak modrá prohlížeče). */
+:root { accent-color: var(--accent); }
 html, body { margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -98,9 +139,21 @@ input, textarea, select { font-family: inherit; font-size: inherit; color: inher
 .site-header {
   position: sticky; top: 0; z-index: 20;
   background: var(--header-bg);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  color: var(--on-header);
+  border-bottom: 1px solid rgba(0,0,0,0.15);
 }
+/* Prvky v tmavé hlavičce: světlé varianty, jinak by splynuly s pozadím. */
+.site-header .brand-subtitle { color: var(--on-header-muted); }
+.site-header .avatar { background: var(--surface); color: var(--accent-2); border-color: rgba(255,255,255,0.35); }
+.site-header .mobile-menu[open] > summary { color: var(--on-header); background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.6); }
+.site-header .nav a { color: var(--on-header); }
+.site-header .nav a:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); }
+.site-header .nav a.active { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); color: var(--on-header); }
+.site-header .btn { background: var(--surface); color: var(--accent-2); }
+.site-header .btn:hover { background: var(--bg); color: var(--accent-2); }
+.site-header .btn-ghost { background: transparent; color: var(--on-header); border-color: rgba(255,255,255,0.45); }
+.site-header .btn-ghost:hover { background: rgba(255,255,255,0.12); color: var(--on-header); border-color: rgba(255,255,255,0.7); }
+.site-header .mobile-menu > summary { color: var(--on-header); border-color: rgba(255,255,255,0.45); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 0; }
 .brand { display: flex; align-items: center; gap: 14px; color: inherit; text-decoration: none; }
 .brand:hover { color: inherit; text-decoration: none; }
@@ -601,10 +654,11 @@ input, textarea, select { font-family: inherit; font-size: inherit; color: inher
 .table .mono { font-family: var(--font-mono); font-size: 0.85rem; }
 
 /* FOOTER */
-.site-footer { border-top: 1px solid var(--border); padding: 24px 0 36px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); margin-top: 64px; }
+.site-footer { background: var(--footer-bg); padding: 28px 0 40px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--on-footer-muted); margin-top: 64px; }
+.site-footer a { color: var(--on-footer); }
 .footer-inner { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
-.footer-links a { margin-left: 14px; color: var(--muted); text-decoration: none; }
-.footer-links a:hover { color: var(--accent); }
+.footer-links a { margin-left: 14px; color: var(--on-footer-muted); text-decoration: none; }
+.footer-links a:hover { color: var(--on-footer); text-decoration: underline; }
 
 /* UTILITIES */
 .hstack { display: flex; align-items: center; gap: 10px; }

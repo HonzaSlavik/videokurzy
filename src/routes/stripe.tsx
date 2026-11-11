@@ -89,7 +89,7 @@ stripeRoutes.get("/checkout/success", async (c) => {
               </p>
               <a
                 href={lessonInfo.email ? `/login?email=${encodeURIComponent(lessonInfo.email)}` : "/login"}
-                class="text-blue-600 hover:underline"
+                class="text-indigo-600 hover:underline"
               >
                 Přihlásit se a přehrát video
               </a>
@@ -99,7 +99,7 @@ stripeRoutes.get("/checkout/success", async (c) => {
               <p class="text-gray-600 mb-6">
                 Zkontrolujte svůj email — posíláme vám přihlašovací odkaz k videokurzu.
               </p>
-              <a href="/login" class="text-blue-600 hover:underline">
+              <a href="/login" class="text-indigo-600 hover:underline">
                 Přihlásit se
               </a>
             </>

@@ -10,14 +10,14 @@ import { MAIL, OPERATOR, OPERATOR_POSTAL, SITE } from "../config/site";
 
 // Brand barvy pro emailové šablony. Inline CSS je nutnost (klienti CSS ignorují),
 // ale konstanty drží konzistenci, ať změna brand barvy je jednomístná.
-const BRAND = "#4f46e5";        // indigo-600 — primární akce
-const BRAND_DARK = "#3730a3";   // indigo-800 — důraz, nadpisy v callout
-const BRAND_MID = "#4338ca";    // indigo-700 — odstavce v callout
-const BRAND_LIGHT = "#eef2ff";  // indigo-50 — pozadí callout
-const BRAND_BORDER = "#c7d2fe"; // indigo-200 — border callout
-const TEXT = "#1f2937";         // gray-800 — tělo
-const TEXT_MUTED = "#4b5563";   // gray-600 — patička, hint (≥4.5:1 na bílé)
-const DIVIDER = "#e5e7eb";      // gray-200 — separátor
+const BRAND = "#7a6626";        // --accent, primární akce (bílý text 5,6:1)
+const BRAND_DARK = "#4a3e17";   // zlatá 800, důraz a nadpisy v callout
+const BRAND_MID = "#5e4e1c";    // zlatá 700, odstavce v callout
+const BRAND_LIGHT = "#faf7ee";  // zlatá 50, pozadí callout
+const BRAND_BORDER = "#e6dab4"; // zlatá 200, border callout
+const TEXT = "#2e2c27";         // teplá šedá 800, tělo
+const TEXT_MUTED = "#5d5a52";   // teplá šedá 600, patička a hint (6,9:1 na bílé)
+const DIVIDER = "#e6e3db";      // teplá šedá 200, separátor
 
 interface SendEmailOptions {
   to: string | string[];
@@ -118,7 +118,7 @@ export function fioPendingHtml(
     <p style="font-size: 16px; line-height: 1.5;">Pro aktivaci přístupu uhraďte <strong>${formattedAmount} Kč</strong> bankovním převodem do <strong>${dueDate}</strong>.</p>
     ${primaryButton(payUrl, "Zobrazit platební údaje, QR kód a doklad")}
     ${proformaBlock}
-    <p style="font-size: 14px; color: #4b5563; line-height: 1.5;">
+    <p style="font-size: 14px; color: #5d5a52; line-height: 1.5;">
       Po připsání platby na účet vám pošleme přihlašovací odkaz. Mezibankovní převody obvykle trvají 1 pracovní den.
     </p>`);
 }
@@ -148,7 +148,7 @@ export async function purchaseConfirmedHtml(
     <p style="font-size: 16px; line-height: 1.5;">Platba přijata — ${typeLabel} je aktivní!</p>
     <p style="font-size: 16px; line-height: 1.5;">Přístup ke všem kurzům máte na 12 měsíců.</p>
     ${primaryButton(loginUrl, "Přihlásit se do kurzu")}
-    <p style="font-size: 14px; color: #4b5563; line-height: 1.5;">
+    <p style="font-size: 14px; color: #5d5a52; line-height: 1.5;">
       Dotazy? Odpovězte na tento email — píše vám ${MAIL.signature}.
     </p>
     ${isConsumer ? withdrawalNoticeBlock() : ""}
@@ -246,7 +246,7 @@ async function termsBlock(prices: Prices): Promise<string> {
     .replace(/<t([dh])>/g, `<t$1 style="border: 1px solid ${DIVIDER}; padding: 6px 8px; text-align: left;">`)
     .replace(
       /<blockquote/g,
-      `<blockquote style="border-left: 3px solid ${DIVIDER}; background: #f9fafb; padding: 10px 14px; margin: 12px 0; font-size: 12px; line-height: 1.7;"`,
+      `<blockquote style="border-left: 3px solid ${DIVIDER}; background: #faf9f6; padding: 10px 14px; margin: 12px 0; font-size: 12px; line-height: 1.7;"`,
     );
 
   return `
@@ -272,19 +272,19 @@ function withdrawalNoticeBlock(): string {
   return `
     <hr style="border: none; border-top: 1px solid ${DIVIDER}; margin: 32px 0;">
     <h2 style="font-size: 15px; font-weight: 600; margin: 0 0 8px;">Poučení o právu na odstoupení od smlouvy</h2>
-    <p style="font-size: 13px; color: #4b5563; line-height: 1.6; margin: 0 0 8px;">
+    <p style="font-size: 13px; color: #5d5a52; line-height: 1.6; margin: 0 0 8px;">
       Máte právo odstoupit od smlouvy do 14 dnů ode dne jejího uzavření, a to bez
       udání důvodu. Toto právo vám zůstává i poté, co jste si kurzy zpřístupnil(a)
       nebo zhlédl(a) — zákonnou výjimku pro digitální obsah neuplatňujeme.
     </p>
-    <p style="font-size: 13px; color: #4b5563; line-height: 1.6; margin: 0 0 8px;">
+    <p style="font-size: 13px; color: #5d5a52; line-height: 1.6; margin: 0 0 8px;">
       Odstoupení stačí odeslat před uplynutím lhůty e-mailem na
       <a href="mailto:${OPERATOR.email}">${OPERATOR.email}</a> nebo poštou
       na adresu ${OPERATOR_POSTAL}. Postačí jakékoli jednoznačné prohlášení; formulář níže je jen
       pomůcka a jeho použití není povinné. Peníze vrátíme do 14 dnů od doručení
       odstoupení stejným způsobem, jakým jsme je přijali.
     </p>
-    <div style="font-size: 13px; color: #4b5563; line-height: 1.7; background: #f9fafb; border-left: 3px solid ${DIVIDER}; padding: 12px 16px; margin: 12px 0;">
+    <div style="font-size: 13px; color: #5d5a52; line-height: 1.7; background: #faf9f6; border-left: 3px solid ${DIVIDER}; padding: 12px 16px; margin: 12px 0;">
       <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br><br>
       Adresát: ${OPERATOR_POSTAL}, ${OPERATOR.email}<br><br>
       Oznamuji, že tímto odstupuji od smlouvy o poskytnutí přístupu k videokurzům na ${SITE.host}.<br><br>
@@ -307,7 +307,7 @@ export function accountDeletionConfirmHtml(confirmUrl: string): string {
     <p style="font-size: 16px; line-height: 1.5;">Požádali jste o <strong>trvalé smazání svého účtu</strong> na ${SITE.host}.</p>
     <p style="font-size: 16px; line-height: 1.5;">Po potvrzení se smaže váš profil, přihlašovací údaje a postup ve kurzech. Tuto akci nelze vrátit zpět.</p>
     ${primaryButton(confirmUrl, "Potvrdit smazání účtu")}
-    <p style="font-size: 14px; color: #4b5563; line-height: 1.5;">
+    <p style="font-size: 14px; color: #5d5a52; line-height: 1.5;">
       Odkaz je platný 15 minut. Pokud jste o smazání nežádali, tento email ignorujte — nic se nestane.
     </p>`);
 }
@@ -376,7 +376,7 @@ export function adminNewOrgHtml(domain: string, buyerEmail: string, paymentMetho
         : "FIO (bankovní převod)";
   return emailWrapper(`
     <p style="font-size: 16px; line-height: 1.5;"><strong>Nová firemní objednávka</strong></p>
-    <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin: 16px 0;">
+    <div style="background: #faf9f6; border-radius: 8px; padding: 16px; margin: 16px 0;">
       <p style="margin: 4px 0; font-size: 14px;"><strong>Doména:</strong> ${domain}</p>
       <p style="margin: 4px 0; font-size: 14px;"><strong>Email kupujícího:</strong> ${buyerEmail}</p>
       <p style="margin: 4px 0; font-size: 14px;"><strong>Způsob platby:</strong> ${paymentLabel}</p>
@@ -413,7 +413,7 @@ export function adminWelcomeUserHtml(opts: {
     <div style="font-size: 16px; line-height: 1.5; white-space: pre-wrap;">${escapedMessage}</div>
     <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;">
     <p style="font-size: 14px; color: #444; line-height: 1.5;"><strong>Informace o tvém účtu</strong></p>
-    <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin: 12px 0; font-size: 14px; line-height: 1.6;">
+    <div style="background: #faf9f6; border-radius: 8px; padding: 16px; margin: 12px 0; font-size: 14px; line-height: 1.6;">
       <p style="margin: 0;"><strong>Platforma:</strong> ${SITE.host}</p>
       <p style="margin: 4px 0 0;"><strong>Přihlašovací e-mail:</strong> ${opts.email}</p>
       <p style="margin: 4px 0 0;"><strong>Typ přístupu:</strong> ${ACCESS_LABEL[opts.access]}</p>
@@ -472,19 +472,19 @@ export interface PaymentReminderOpts {
 /** PNG QR kód vygenerovaný přes api.qrserver.com — žádná závislost ani build krok. */
 function qrImageTag(spd: string, size = 220): string {
   const url = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=8&data=${encodeURIComponent(spd)}`;
-  return `<img src="${url}" width="${size}" height="${size}" alt="QR platba" style="display:block;margin:0 auto;border:1px solid #e5e7eb;border-radius:8px;background:white;">`;
+  return `<img src="${url}" width="${size}" height="${size}" alt="QR platba" style="display:block;margin:0 auto;border:1px solid #e6e3db;border-radius:8px;background:white;">`;
 }
 
 function paymentBox(opts: PaymentReminderOpts): string {
   const amount = opts.amount.toLocaleString("cs-CZ");
-  return `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin:20px 0;text-align:center;">
+  return `<div style="background:#faf9f6;border:1px solid #e6e3db;border-radius:10px;padding:20px;margin:20px 0;text-align:center;">
     ${qrImageTag(opts.spd)}
-    <p style="font-size:14px;color:#4b5563;margin:14px 0 4px;">Naskenujte QR v bankovní aplikaci nebo zadejte ručně:</p>
-    <table style="margin:8px auto 0;font-size:14px;color:#111827;line-height:1.7;">
-      <tr><td style="text-align:right;padding-right:10px;color:#6b7280;">Účet:</td><td><strong>${opts.accountNumber}</strong></td></tr>
-      <tr><td style="text-align:right;padding-right:10px;color:#6b7280;">Částka:</td><td><strong>${amount} Kč</strong></td></tr>
-      <tr><td style="text-align:right;padding-right:10px;color:#6b7280;">Variabilní symbol:</td><td><strong>${opts.vs}</strong></td></tr>
-      <tr><td style="text-align:right;padding-right:10px;color:#6b7280;">Splatnost do:</td><td><strong>${opts.dueDate}</strong></td></tr>
+    <p style="font-size:14px;color:#5d5a52;margin:14px 0 4px;">Naskenujte QR v bankovní aplikaci nebo zadejte ručně:</p>
+    <table style="margin:8px auto 0;font-size:14px;color:#1f1d18;line-height:1.7;">
+      <tr><td style="text-align:right;padding-right:10px;color:#736e62;">Účet:</td><td><strong>${opts.accountNumber}</strong></td></tr>
+      <tr><td style="text-align:right;padding-right:10px;color:#736e62;">Částka:</td><td><strong>${amount} Kč</strong></td></tr>
+      <tr><td style="text-align:right;padding-right:10px;color:#736e62;">Variabilní symbol:</td><td><strong>${opts.vs}</strong></td></tr>
+      <tr><td style="text-align:right;padding-right:10px;color:#736e62;">Splatnost do:</td><td><strong>${opts.dueDate}</strong></td></tr>
     </table>
   </div>`;
 }
@@ -496,10 +496,10 @@ export function paymentReminder2dHtml(opts: PaymentReminderOpts): string {
     <p style="font-size:16px;line-height:1.5;">připomínáme, že na vaši objednávku kurzu zatím nedorazila platba. Tady jsou opět platební údaje:</p>
     ${paymentBox(opts)}
     ${primaryButton(opts.payUrl, "Otevřít platební stránku")}
-    <p style="font-size:14px;color:#6b7280;line-height:1.6;">
-      Chcete raději platit kartou? <a href="${opts.cardUrl}" style="color:#4f46e5;">Klikněte sem</a> — vytvoříte novou objednávku přes Stripe a přístup máte hned po zaplacení.
+    <p style="font-size:14px;color:#736e62;line-height:1.6;">
+      Chcete raději platit kartou? <a href="${opts.cardUrl}" style="color:${BRAND};">Klikněte sem</a> — vytvoříte novou objednávku přes Stripe a přístup máte hned po zaplacení.
     </p>
-    <p style="font-size:14px;color:#6b7280;line-height:1.6;">
+    <p style="font-size:14px;color:#736e62;line-height:1.6;">
       Pokud už jste zaplatili v posledních hodinách, tento email klidně ignorujte — bankovní převod může trvat 1 pracovní den, než dorazí na účet.
     </p>`);
 }
@@ -513,10 +513,10 @@ export function paymentReminder5dHtml(opts: PaymentReminderOpts): string {
     </p>
     ${paymentBox(opts)}
     ${primaryButton(opts.payUrl, "Otevřít platební stránku")}
-    <p style="font-size:14px;color:#6b7280;line-height:1.6;">
-      Chcete raději platit kartou s okamžitou aktivací? <a href="${opts.cardUrl}" style="color:#4f46e5;">Klikněte sem</a>.
+    <p style="font-size:14px;color:#736e62;line-height:1.6;">
+      Chcete raději platit kartou s okamžitou aktivací? <a href="${opts.cardUrl}" style="color:${BRAND};">Klikněte sem</a>.
     </p>
-    <p style="font-size:14px;color:#6b7280;line-height:1.6;">
+    <p style="font-size:14px;color:#736e62;line-height:1.6;">
       Dotazy? Odpovězte na tento email — píše vám ${MAIL.signature}.
     </p>`);
 }
@@ -532,7 +532,7 @@ export function paymentCancelledHtml(opts: { reorderUrl: string; vs: string }): 
       Pokud máte o kurz stále zájem, vytvořte si prosím novou objednávku. Můžete platit kartou nebo bankovním převodem:
     </p>
     ${primaryButton(opts.reorderUrl, "Vytvořit novou objednávku")}
-    <p style="font-size:14px;color:#6b7280;line-height:1.6;">
+    <p style="font-size:14px;color:#736e62;line-height:1.6;">
       Pokud jste platbu provedli těsně před stornem a peníze dorazí dodatečně, automaticky vám obnovíme přístup a pošleme přihlašovací odkaz.
     </p>`);
 }

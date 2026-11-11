@@ -931,7 +931,7 @@ admin.get("/admin", async (c) => {
 
         {/* Quick links */}
         <div class="flex gap-4">
-          <a href="/admin/courses" class="text-blue-600 hover:underline">
+          <a href="/admin/courses" class="text-indigo-600 hover:underline">
             Správa kurzů
           </a>
         </div>
@@ -1552,7 +1552,7 @@ admin.get("/admin/fakturace", async (c) => {
                       )}
                       {r.lastErrorCode !== "estimated_paid_date" && (
                         <form method="post" action={`/admin/fakturace/${r.id}/retry`}>
-                          <button class="text-blue-600 hover:underline text-xs">Zkusit znovu</button>
+                          <button class="text-indigo-600 hover:underline text-xs">Zkusit znovu</button>
                         </form>
                       )}
                       <form method="post" action={`/admin/fakturace/${r.id}/resolve`} class="flex gap-1">
